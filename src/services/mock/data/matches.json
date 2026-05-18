@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "title": "Giao lưu cầu lông Quận 9",
+    "sport": "Cầu Lông",
+    "gameType": "Đôi nam nữ",
+    "scheduleTime": "2026-05-19T17:00:00",
+    "players": [
+      { "id": 101, "name": "Anh Tuấn", "avatar": "https://i.pravatar.cc/150?u=101" },
+      { "id": 102, "name": "Minh Tuyết", "avatar": "https://i.pravatar.cc/150?u=102" }
+    ],
+    "spotsLeft": 2,
+    "skillLevel": "Trung bình",
+    "imageUrl": "https://images.unsplash.com/photo-1521537634581-0dced2fee2ef?q=80&w=2070&auto=format&fit=crop"
+  },
+  {
+    "id": 2,
+    "title": "Pickleball cho người mới bắt đầu",
+    "sport": "Pickleball",
+    "gameType": "Đơn/Đôi",
+    "scheduleTime": "2026-05-19T18:30:00",
+    "players": [
+      { "id": 103, "name": "Hoàng Long", "avatar": "https://i.pravatar.cc/150?u=103" }
+    ],
+    "spotsLeft": 3,
+    "skillLevel": "Mới chơi",
+    "imageUrl": "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?q=80&w=2070&auto=format&fit=crop"
+  },
+  {
+    "id": 3,
+    "title": "Kèo Tennis Quận 2 - Hardcore",
+    "sport": "Tennis",
+    "gameType": "Đơn nam",
+    "scheduleTime": "2026-05-20T06:00:00",
+    "players": [
+      { "id": 104, "name": "Quốc Huy", "avatar": "https://i.pravatar.cc/150?u=104" }
+    ],
+    "spotsLeft": 1,
+    "skillLevel": "Khá/Giỏi",
+    "imageUrl": "https://images.unsplash.com/photo-1595435066319-7057fe20b050?q=80&w=2070&auto=format&fit=crop"
+  },
+  {
+    "id": 4,
+    "title": "Cầu lông sáng sớm - Thủ Đức",
+    "sport": "Cầu Lông",
+    "gameType": "Đôi nam",
+    "scheduleTime": "2026-05-20T05:30:00",
+    "players": [
+      { "id": 105, "name": "Văn Nam", "avatar": "https://i.pravatar.cc/150?u=105" },
+      { "id": 106, "name": "Thế Anh", "avatar": "https://i.pravatar.cc/150?u=106" },
+      { "id": 107, "name": "Duy Mạnh", "avatar": "https://i.pravatar.cc/150?u=107" }
+    ],
+    "spotsLeft": 1,
+    "skillLevel": "Trung bình khá",
+    "imageUrl": "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=2070&auto=format&fit=crop"
+  }
+]
