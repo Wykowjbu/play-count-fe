@@ -43,3 +43,25 @@ export const getCurrentUser = async () => {
   if (!userJson) return null;
   return JSON.parse(userJson);
 };
+
+/**
+ * Mock registration logic.
+ * @param {Object} userData
+ * @returns {Promise<Object>} The new user object.
+ */
+export const register = async (userData) => {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 800));
+
+  const newUser = {
+    id: Math.floor(Math.random() * 1000),
+    ...userData,
+    avatarUrl: `https://i.pravatar.cc/150?u=${userData.email}`
+  };
+
+  // Exclude password from stored data if present
+  const { password: _, ...userWithoutPassword } = newUser;
+  localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
+  
+  return userWithoutPassword;
+};

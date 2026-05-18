@@ -6,6 +6,8 @@ import BusinessLayout from './layouts/BusinessLayout';
 // Pages
 import Home from './pages/Home';
 import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
+import RegisterOwner from './pages/Auth/RegisterOwner';
 import VenueDetails from './pages/Venues/VenueDetails';
 import Matches from './pages/Matches';
 import Revenue from './pages/Business/Revenue';
@@ -24,6 +26,8 @@ function App() {
         {/* Auth Routes */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/register-owner" element={<RegisterOwner />} />
         </Route>
 
         {/* Business Routes */}
