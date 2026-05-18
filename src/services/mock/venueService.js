@@ -12,6 +12,14 @@ export const getRecommendedVenues = async () => {
 };
 
 /**
+ * Lấy tất cả danh sách sân
+ */
+export const getAllVenues = async () => {
+  await new Promise(resolve => setTimeout(resolve, 400));
+  return venues;
+};
+
+/**
  * Lấy thông tin chi tiết của một sân theo ID
  * @param {number} id 
  */

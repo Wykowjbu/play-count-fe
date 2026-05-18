@@ -9,6 +9,7 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import RegisterOwner from './pages/Auth/RegisterOwner';
 import VenueDetails from './pages/Venues/VenueDetails';
+import FindCourts from './pages/Venues/FindCourts';
 import Matches from './pages/Matches';
 import Revenue from './pages/Business/Revenue';
 
@@ -19,6 +20,7 @@ function App() {
         {/* Public Routes */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/find-courts" element={<FindCourts />} />
           <Route path="/venues/:id" element={<VenueDetails />} />
           <Route path="/matches" element={<Matches />} />
         </Route>

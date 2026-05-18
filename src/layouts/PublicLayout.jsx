@@ -14,7 +14,7 @@ export default function PublicLayout() {
               </Link>
               
               <div className="hidden md:ml-8 md:flex md:space-x-8">
-                <Link to="/" className="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-primary text-sm font-medium">
+                <Link to="/find-courts" className="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-primary text-sm font-medium">
                   Find Courts
                 </Link>
                 <Link to="/matches" className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium">
