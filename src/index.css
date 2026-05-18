@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #22c55e;
+  --color-background-light: #f8fafc;
+  --color-background-dark: #0f172a;
+  --font-display: Lexend, sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: 'Lexend', sans-serif;
+  }
+}
