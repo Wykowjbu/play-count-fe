@@ -1,16 +1,38 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import PublicLayout from './layouts/PublicLayout';
+import AuthLayout from './layouts/AuthLayout';
+import BusinessLayout from './layouts/BusinessLayout';
+
+// Pages
+import Home from './pages/Home';
+import Login from './pages/Auth/Login';
+import VenueDetails from './pages/Venues/VenueDetails';
+import Matches from './pages/Matches';
+import Revenue from './pages/Business/Revenue';
+
 function App() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-900 text-white">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold text-sky-400">
-          React + Vite + Tailwind v4
-        </h1>
-        <p className="mt-4 text-lg text-slate-400">
-          Project đã được khởi tạo thành công!
-        </p>
-      </div>
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        {/* Public Routes */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/venues/:id" element={<VenueDetails />} />
+          <Route path="/matches" element={<Matches />} />
+        </Route>
+
+        {/* Auth Routes */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
+        </Route>
+
+        {/* Business Routes */}
+        <Route element={<BusinessLayout />}>
+          <Route path="/business/revenue" element={<Revenue />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

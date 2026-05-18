@@ -1,0 +1,30 @@
+{
+  "stats": {
+    "totalRevenue": 12450.00,
+    "avgDailyIncome": 415.00,
+    "totalBookings": 142,
+    "occupancyRate": 78
+  },
+  "trends": [
+    { "day": "Mon", "value": 320 },
+    { "day": "Tue", "value": 450 },
+    { "day": "Wed", "value": 410 },
+    { "day": "Thu", "value": 580 },
+    { "day": "Fri", "value": 850 },
+    { "day": "Sat", "value": 1200 },
+    { "day": "Sun", "value": 980 }
+  ],
+  "breakdown": [
+    { "sport": "Pickleball", "percentage": 45, "color": "#22c55e" },
+    { "sport": "Tennis", "percentage": 30, "color": "#3b82f6" },
+    { "sport": "Badminton", "percentage": 15, "color": "#f59e0b" },
+    { "sport": "Others", "percentage": 10, "color": "#94a3b8" }
+  ],
+  "recentSources": [
+    { "id": 1, "date": "2026-05-18", "source": "Booking #BK1024", "sport": "Pickleball", "amount": 45.00, "status": "Completed" },
+    { "id": 2, "date": "2026-05-18", "source": "Booking #BK1023", "sport": "Tennis", "amount": 60.00, "status": "Completed" },
+    { "id": 3, "date": "2026-05-17", "source": "Booking #BK1022", "sport": "Pickleball", "amount": 45.00, "status": "Completed" },
+    { "id": 4, "date": "2026-05-17", "source": "Membership Fee", "sport": "N/A", "amount": 200.00, "status": "Completed" },
+    { "id": 5, "date": "2026-05-16", "source": "Booking #BK1021", "sport": "Badminton", "amount": 30.00, "status": "Completed" }
+  ]
+}

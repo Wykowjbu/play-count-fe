@@ -7,11 +7,34 @@
     "distance": "1.2 km",
     "pricePerHour": 80000,
     "imageUrl": "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=2070&auto=format&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1595435066319-7057fe20b050?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1521537634581-0dced2fee2ef?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1613918431703-aa5505c86682?q=80&w=2070&auto=format&fit=crop"
+    ],
     "badgeText": "Hot",
-    "description": "Sân cầu lông Bình Minh với cơ sở vật chất hiện đại, thảm PVC tiêu chuẩn quốc tế, ánh sáng chống chói.",
-    "amenities": ["Gửi xe miễn phí", "Nước uống", "Wifi", "Phòng tắm"],
+    "description": "Sân cầu lông Bình Minh với cơ sở vật chất hiện đại, thảm PVC tiêu chuẩn quốc tế, ánh sáng chống chói. Đội ngũ nhân viên nhiệt tình, chu đáo, sẵn sàng hỗ trợ khách hàng. Không gian rộng rãi, thoáng mát, tạo cảm giác thoải mái khi thi đấu.",
+    "amenities": ["Gửi xe miễn phí", "Nước uống", "Wifi", "Phòng tắm", "Căn tin", "Cho thuê vợt"],
     "availableDates": ["2026-05-19", "2026-05-20", "2026-05-21"],
-    "timeSlots": ["08:00 - 09:00", "09:00 - 10:00", "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00"]
+    "timeSlots": ["08:00 - 09:00", "09:00 - 10:00", "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00"],
+    "reviews": [
+      {
+        "id": 1,
+        "user": "Nguyễn Văn A",
+        "rating": 5,
+        "date": "2024-03-15",
+        "comment": "Sân rất đẹp, thảm mới, ánh sáng tốt. Sẽ quay lại!"
+      },
+      {
+        "id": 2,
+        "user": "Trần Thị B",
+        "rating": 4,
+        "date": "2024-03-10",
+        "comment": "Phòng tắm hơi nhỏ nhưng sạch sẽ. Giá cả hợp lý."
+      }
+    ]
   },
   {
     "id": 2,

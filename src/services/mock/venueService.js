@@ -1,5 +1,6 @@
 import venues from './data/venues.json';
 import matches from './data/matches.json';
+import revenueData from './data/revenue.json';
 
 /**
  * Lấy danh sách các sân được đề xuất (rating >= 4.7)
@@ -26,4 +27,12 @@ export const getVenueDetails = async (id) => {
 export const getLiveMatches = async () => {
   await new Promise(resolve => setTimeout(resolve, 300));
   return matches;
+};
+
+/**
+ * Lấy dữ liệu doanh thu cho chủ sân
+ */
+export const getRevenueData = async () => {
+  await new Promise(resolve => setTimeout(resolve, 400));
+  return revenueData;
 };
