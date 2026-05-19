@@ -10,6 +10,7 @@
       { "id": 102, "name": "Minh Tuyết", "avatarUrl": "https://i.pravatar.cc/150?u=102" }
     ],
     "spotsLeft": 2,
+    "pricePerPerson": 80000,
     "skillLevel": "Intermediate",
     "isHighlighted": false,
     "iconColor": "emerald"
@@ -24,6 +25,7 @@
       { "id": 103, "name": "Hoàng Long", "avatarUrl": "https://i.pravatar.cc/150?u=103" }
     ],
     "spotsLeft": 3,
+    "pricePerPerson": 95000,
     "skillLevel": "Beginner",
     "isHighlighted": true,
     "iconColor": "amber"
@@ -38,6 +40,7 @@
       { "id": 104, "name": "Quốc Huy", "avatarUrl": "https://i.pravatar.cc/150?u=104" }
     ],
     "spotsLeft": 1,
+    "pricePerPerson": 120000,
     "skillLevel": "Advanced",
     "isHighlighted": false,
     "iconColor": "blue"
@@ -54,6 +57,7 @@
       { "id": 107, "name": "Duy Mạnh", "avatarUrl": "https://i.pravatar.cc/150?u=107" }
     ],
     "spotsLeft": 1,
+    "pricePerPerson": 70000,
     "skillLevel": "Intermediate",
     "isHighlighted": false,
     "iconColor": "emerald"

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as venueService from '../../services/mock/venueService';
+import { formatCurrency } from '../../utils/format';
 
 export default function FindCourts() {
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
   const [priceRange, setPriceRange] = useState(25);
   const [searchParams, setSearchParams] = useState({
     sport: 'Pickleball',
@@ -32,31 +34,52 @@ export default function FindCourts() {
 
   return (
     <div className="bg-background-light dark:bg-background-dark min-h-screen">
-      {/* Sticky Sub-Header Search */}
-      <div className="sticky top-16 z-40 bg-white/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 py-4 shadow-sm">
-        <div className="max-w-[1440px] mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-3">
-            <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-2 bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
-              <div className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 rounded-xl shadow-sm">
-                <span className="material-symbols-outlined text-primary text-lg">sports_tennis</span>
+      <div className="border-b border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
+        <div className="max-w-[1440px] mx-auto px-6 py-8">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Search Panel</p>
+              <h1 className="text-3xl font-black text-slate-900 dark:text-white">Find courts and open match slots</h1>
+              <p className="mt-2 text-sm font-bold text-slate-500 dark:text-slate-400">
+                Book a court, then create a match so other players can join your session.
+              </p>
+            </div>
+            <Link
+              to="/matches"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 text-sm font-black text-white hover:bg-primary transition-colors"
+            >
+              <span className="material-symbols-outlined">add</span>
+              Create Match
+            </Link>
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-3 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1.2fr_auto] gap-3">
+              <label className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-900">
+                <span className="material-symbols-outlined text-primary text-xl">sports_tennis</span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Sport</span>
                 <select 
                   name="sport"
                   value={searchParams.sport}
                   onChange={handleSearchChange}
-                  className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full text-slate-800 dark:text-slate-200 p-0 outline-none"
+                    className="mt-1 w-full bg-transparent p-0 text-sm font-black text-slate-800 outline-none dark:text-slate-200"
                 >
                   <option>Pickleball</option>
                   <option>Tennis</option>
                   <option>Badminton</option>
                 </select>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 rounded-xl shadow-sm">
-                <span className="material-symbols-outlined text-primary text-lg">location_on</span>
+                </span>
+              </label>
+              <label className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-900">
+                <span className="material-symbols-outlined text-primary text-xl">location_on</span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">District</span>
                 <select 
                   name="district"
                   value={searchParams.district}
                   onChange={handleSearchChange}
-                  className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full text-slate-800 dark:text-slate-200 p-0 outline-none"
+                    className="mt-1 w-full bg-transparent p-0 text-sm font-black text-slate-800 outline-none dark:text-slate-200"
                 >
                   <option>Son Tra District</option>
                   <option>Hai Chau District</option>
@@ -64,79 +87,119 @@ export default function FindCourts() {
                   <option>Thanh Khe</option>
                   <option>Cam Le</option>
                 </select>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-800 rounded-xl shadow-sm">
-                <span className="material-symbols-outlined text-primary text-lg">calendar_today</span>
+                </span>
+              </label>
+              <label className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-700 dark:bg-slate-900">
+                <span className="material-symbols-outlined text-primary text-xl">calendar_today</span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Time</span>
                 <input 
                   type="text" 
                   name="time"
                   value={searchParams.time}
                   onChange={handleSearchChange}
-                  className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full text-slate-800 dark:text-slate-200 p-0 outline-none"
+                    className="mt-1 w-full bg-transparent p-0 text-sm font-black text-slate-800 outline-none dark:text-slate-200"
                 />
-              </div>
-            </div>
-            <button className="bg-primary text-white font-black px-8 py-3 rounded-2xl flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/30 min-w-[160px]">
+                </span>
+              </label>
+              <button className="inline-flex h-full min-h-14 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-black text-white shadow-lg shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer">
               <span className="material-symbols-outlined">search</span>
               <span>Update Results</span>
             </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <main className="max-w-[1440px] mx-auto px-6 py-8 flex gap-8">
+      <main className="max-w-[1440px] mx-auto px-6 py-8 flex flex-col lg:flex-row gap-8">
+        <div className="lg:hidden">
+          <button
+            type="button"
+            aria-controls="court-filter-panel"
+            aria-expanded={showFilters}
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-4 text-left shadow-sm transition-colors hover:border-primary cursor-pointer"
+          >
+            <span>
+              <span className="block text-[10px] font-black uppercase tracking-widest text-primary">Quick Filters</span>
+              <span className="mt-1 block text-sm font-black text-slate-900">Price, amenities, surface</span>
+            </span>
+            <span className="material-symbols-outlined text-slate-500">{showFilters ? 'expand_less' : 'tune'}</span>
+          </button>
+        </div>
+
         {/* Sidebar Filters */}
-        <aside className="hidden lg:block w-72 flex-shrink-0">
-          <div className="sticky top-44 flex flex-col gap-8">
-            <div>
-              <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-5">Price Range</h3>
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between text-sm font-bold text-slate-600 dark:text-slate-400">
-                  <span>$5</span>
-                  <span>$50+</span>
-                </div>
-                <input 
-                  type="range" 
-                  min="5" 
-                  max="50" 
-                  value={priceRange}
-                  onChange={(e) => setPriceRange(e.target.value)}
-                  className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary" 
-                />
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm font-bold text-slate-700 dark:text-slate-300">$5</div>
-                  <div className="h-px w-3 bg-slate-300"></div>
-                  <div className="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm font-bold text-slate-700 dark:text-slate-300">${priceRange}</div>
-                </div>
+        <aside
+          id="court-filter-panel"
+          className={`${showFilters ? 'block' : 'hidden'} lg:block lg:w-72 flex-shrink-0`}
+        >
+          <div className="sticky top-24 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-primary">Quick Filters</p>
+                <p className="mt-1 text-sm font-black text-slate-900 dark:text-white">Refine results</p>
               </div>
+              <span className="material-symbols-outlined text-slate-400">tune</span>
             </div>
-            
-            <hr className="border-slate-200 dark:border-slate-800"/>
-            
-            <div>
-              <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-5">Amenities</h3>
-              <div className="flex flex-col gap-4">
-                {['Night Lighting', 'Water & Cafe', 'Indoor Facility', 'Equipment Rental'].map((amenity) => (
-                  <label key={amenity} className="flex items-center gap-3 cursor-pointer group">
-                    <div className="relative flex items-center">
-                      <input type="checkbox" className="peer appearance-none size-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg checked:bg-primary checked:border-primary transition-all" />
-                      <span className="material-symbols-outlined absolute text-white text-base left-1 opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
-                    </div>
-                    <span className="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">{amenity}</span>
-                  </label>
-                ))}
+            <div className="flex flex-col gap-7">
+              <div>
+                <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-5">Price Range</h3>
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between text-sm font-bold text-slate-600 dark:text-slate-400">
+                    <span>50K</span>
+                    <span>500K+</span>
+                  </div>
+                  <input 
+                    type="range" 
+                    min="5" 
+                    max="50" 
+                    value={priceRange}
+                    onChange={(e) => setPriceRange(e.target.value)}
+                    className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary" 
+                  />
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm font-bold text-slate-700 dark:text-slate-300">50K</div>
+                    <div className="h-px w-3 bg-slate-300"></div>
+                    <div className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm font-bold text-slate-700 dark:text-slate-300">{priceRange * 10000 / 1000}K</div>
+                  </div>
+                </div>
               </div>
-            </div>
             
-            <hr className="border-slate-200 dark:border-slate-800"/>
+              <hr className="border-slate-200 dark:border-slate-800"/>
             
-            <div>
-              <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-5">Surface Type</h3>
-              <div className="flex flex-wrap gap-2">
-                <button className="px-4 py-2 bg-primary text-white text-xs font-black rounded-full transition-all">Hard Court</button>
-                <button className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-black rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">Clay</button>
-                <button className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-black rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">Grass</button>
+              <div>
+                <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-5">Amenities</h3>
+                <div className="flex flex-col gap-4">
+                  {['Night Lighting', 'Water & Cafe', 'Indoor Facility', 'Equipment Rental'].map((amenity) => (
+                    <label key={amenity} className="flex items-center gap-3 cursor-pointer group">
+                      <div className="relative flex items-center">
+                        <input type="checkbox" className="peer appearance-none size-6 border-2 border-slate-300 dark:border-slate-600 rounded-lg checked:bg-primary checked:border-primary transition-all" />
+                        <span className="material-symbols-outlined absolute text-white text-base left-1 opacity-0 peer-checked:opacity-100 transition-opacity">check</span>
+                      </div>
+                      <span className="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors">{amenity}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
+            
+              <hr className="border-slate-200 dark:border-slate-800"/>
+            
+              <div>
+                <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-5">Surface Type</h3>
+                <div className="flex flex-wrap gap-2">
+                  <button className="px-4 py-2 bg-primary text-white text-xs font-black rounded-full transition-all cursor-pointer">Hard Court</button>
+                  <button className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-black rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer">Clay</button>
+                  <button className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-black rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer">Grass</button>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowFilters(false)}
+                className="lg:hidden inline-flex h-12 items-center justify-center rounded-xl bg-slate-900 text-sm font-black text-white hover:bg-primary transition-colors cursor-pointer"
+              >
+                Apply Filters
+              </button>
             </div>
           </div>
         </aside>
@@ -198,7 +261,7 @@ export default function FindCourts() {
                     </p>
                     <div className="flex items-center justify-between pt-5 border-t border-slate-100 dark:border-slate-700">
                       <div>
-                        <span className="text-xl font-black text-primary">${venue.pricePerHour}</span>
+                        <span className="text-xl font-black text-primary">{formatCurrency(venue.pricePerHour)}</span>
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">/ hour</span>
                       </div>
                       <Link 

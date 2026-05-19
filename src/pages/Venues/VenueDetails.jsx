@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as venueService from '../../services/mock/venueService';
+import { formatCurrency } from '../../utils/format';
 
 export default function VenueDetails() {
   const { id } = useParams();
@@ -50,8 +51,8 @@ export default function VenueDetails() {
   return (
     <main className="max-w-[1280px] mx-auto px-6 pt-8 pb-24">
       {/* Image Gallery */}
-      <section className="grid grid-cols-4 grid-rows-2 gap-4 h-[500px] mb-12">
-        <div className="col-span-2 row-span-2 relative overflow-hidden rounded-3xl group cursor-pointer">
+      <section className="grid grid-cols-1 sm:grid-cols-4 sm:grid-rows-2 gap-4 h-auto sm:h-[500px] mb-12">
+        <div className="sm:col-span-2 sm:row-span-2 h-72 sm:h-auto relative overflow-hidden rounded-3xl group cursor-pointer">
           <div 
             className="w-full h-full bg-center bg-cover bg-no-repeat transition-transform duration-700 group-hover:scale-105"
             style={{ backgroundImage: `url(${images[0]})` }}
@@ -59,7 +60,7 @@ export default function VenueDetails() {
         </div>
         
         {images.slice(1, 3).map((img, index) => (
-          <div key={index} className="relative overflow-hidden rounded-3xl group cursor-pointer">
+          <div key={index} className="h-48 sm:h-auto relative overflow-hidden rounded-3xl group cursor-pointer">
             <div 
               className="w-full h-full bg-center bg-cover bg-no-repeat transition-transform duration-700 group-hover:scale-105"
               style={{ backgroundImage: `url(${img})` }}
@@ -68,7 +69,7 @@ export default function VenueDetails() {
         ))}
 
         {images.length >= 4 && (
-          <div className="relative overflow-hidden rounded-3xl group cursor-pointer">
+          <div className="h-48 sm:h-auto relative overflow-hidden rounded-3xl group cursor-pointer">
             <div 
               className="w-full h-full bg-center bg-cover bg-no-repeat transition-transform duration-700 group-hover:scale-105"
               style={{ backgroundImage: `url(${images[3]})` }}
@@ -181,7 +182,7 @@ export default function VenueDetails() {
           <div className="sticky top-24 p-8 rounded-3xl border border-gray-200 shadow-xl shadow-gray-100 bg-white">
             <div className="flex justify-between items-end mb-8">
               <div>
-                <span className="text-3xl font-bold text-gray-900">{venue.pricePerHour.toLocaleString()}đ</span>
+                <span className="text-3xl font-bold text-gray-900">{formatCurrency(venue.pricePerHour)}</span>
                 <span className="text-gray-500 ml-1">/ hour</span>
               </div>
               <div className="flex items-center text-sm">
@@ -248,16 +249,16 @@ export default function VenueDetails() {
               <div className="pt-4 space-y-3">
                 <div className="flex justify-between text-gray-600">
                   <span>Price ({selectedSlot ? '1 hour' : '0 hour'})</span>
-                  <span>{selectedSlot ? venue.pricePerHour.toLocaleString() : 0}đ</span>
+                  <span>{selectedSlot ? formatCurrency(venue.pricePerHour) : formatCurrency(0)}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Service fee</span>
-                  <span>5.000đ</span>
+                  <span>{formatCurrency(5000)}</span>
                 </div>
                 <hr className="border-gray-100" />
                 <div className="flex justify-between text-lg font-bold text-gray-900">
                   <span>Total</span>
-                  <span>{selectedSlot ? (venue.pricePerHour + 5000).toLocaleString() : 0}đ</span>
+                  <span>{selectedSlot ? formatCurrency(venue.pricePerHour + 5000) : formatCurrency(0)}</span>
                 </div>
               </div>
 

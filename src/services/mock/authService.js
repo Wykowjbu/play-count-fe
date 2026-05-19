@@ -16,7 +16,8 @@ export const login = async (email, password) => {
   
   if (user) {
     // Exclude password from stored data
-    const { password: _, ...userWithoutPassword } = user;
+    const { password, ...userWithoutPassword } = user;
+    void password;
     localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
     return userWithoutPassword;
   }
@@ -60,7 +61,8 @@ export const register = async (userData) => {
   };
 
   // Exclude password from stored data if present
-  const { password: _, ...userWithoutPassword } = newUser;
+  const { password, ...userWithoutPassword } = newUser;
+  void password;
   localStorage.setItem(USER_KEY, JSON.stringify(userWithoutPassword));
   
   return userWithoutPassword;

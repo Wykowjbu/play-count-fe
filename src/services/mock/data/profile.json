@@ -1,0 +1,97 @@
+{
+  "currentPlayer": {
+    "id": 1,
+    "fullName": "Nguyen Van Nguoi Choi",
+    "email": "player@gmail.com",
+    "phoneNumber": "0901234567",
+    "avatar": "https://i.pravatar.cc/150?u=1",
+    "homeDistrict": "Son Tra District",
+    "memberSince": "2025-08-12",
+    "preferences": {
+      "favoriteSports": ["Pickleball", "Tennis", "Badminton"],
+      "skillLevel": "Intermediate",
+      "preferredTime": "Evening",
+      "playStyle": "Doubles"
+    },
+    "stats": {
+      "totalBookings": 28,
+      "matchesJoined": 16,
+      "favoriteVenues": 5,
+      "rating": 4.8
+    }
+  },
+  "bookings": [
+    {
+      "id": "BK-2401",
+      "venueName": "Pickleball Center Quan 7",
+      "courtName": "Court 1",
+      "sport": "Pickleball",
+      "date": "2026-05-20",
+      "time": "18:00 - 19:00",
+      "status": "Confirmed",
+      "price": 150000
+    },
+    {
+      "id": "BK-2402",
+      "venueName": "San Tennis Ngoi Sao",
+      "courtName": "Premium Court",
+      "sport": "Tennis",
+      "date": "2026-05-22",
+      "time": "17:00 - 18:00",
+      "status": "Pending",
+      "price": 200000
+    },
+    {
+      "id": "BK-2398",
+      "venueName": "San Cau Long Binh Minh",
+      "courtName": "Court 3",
+      "sport": "Badminton",
+      "date": "2026-05-16",
+      "time": "19:00 - 20:00",
+      "status": "Completed",
+      "price": 80000
+    }
+  ],
+  "businessCourts": [
+    {
+      "id": 1,
+      "name": "Court 1",
+      "sport": "Pickleball",
+      "surface": "Hard Court",
+      "status": "Available",
+      "todayBookings": 6,
+      "occupancyRate": 78,
+      "pricePerHour": 150000
+    },
+    {
+      "id": 2,
+      "name": "Court 2",
+      "sport": "Pickleball",
+      "surface": "Hard Court",
+      "status": "Booked",
+      "todayBookings": 8,
+      "occupancyRate": 92,
+      "pricePerHour": 150000
+    },
+    {
+      "id": 3,
+      "name": "Court 3",
+      "sport": "Tennis",
+      "surface": "Clay",
+      "status": "Maintenance",
+      "todayBookings": 2,
+      "occupancyRate": 35,
+      "pricePerHour": 220000
+    },
+    {
+      "id": 4,
+      "name": "Court 4",
+      "sport": "Badminton",
+      "surface": "PVC",
+      "status": "Available",
+      "todayBookings": 5,
+      "occupancyRate": 64,
+      "pricePerHour": 90000
+    }
+  ]
+}

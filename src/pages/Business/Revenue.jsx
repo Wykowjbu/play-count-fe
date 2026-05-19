@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as venueService from '../../services/mock/venueService';
+import { formatCurrency } from '../../utils/format';
 
 export default function Revenue() {
   const [data, setData] = useState(null);
@@ -38,7 +39,7 @@ export default function Revenue() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           label="Total Revenue"
-          value={`$${stats.totalRevenue.toLocaleString()}`}
+          value={formatCurrency(stats.totalRevenue)}
           trend="+12.5%"
           isPositive={true}
           icon="payments"
@@ -46,7 +47,7 @@ export default function Revenue() {
         />
         <StatCard
           label="Avg. Daily Income"
-          value={`$${stats.avgDailyIncome.toLocaleString()}`}
+          value={formatCurrency(stats.avgDailyIncome)}
           trend="+4.2%"
           isPositive={true}
           icon="trending_up"
@@ -206,7 +207,7 @@ export default function Revenue() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <span className="text-sm font-black text-slate-900">${source.amount.toFixed(2)}</span>
+                    <span className="text-sm font-black text-slate-900">{formatCurrency(source.amount)}</span>
                   </td>
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-600">

@@ -24,8 +24,8 @@ export default function AuthLayout() {
       </div>
 
       {/* Right Side: Auth Form Container */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-16">
-        <div className="w-full max-w-md">
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-5 py-8 sm:px-8 lg:px-14">
+        <div className="w-full max-w-[520px]">
           <div className="lg:hidden flex justify-center mb-8">
             <Link to="/" className="flex items-center space-x-2">
               <span className="material-symbols-outlined text-primary text-4xl">sports_tennis</span>

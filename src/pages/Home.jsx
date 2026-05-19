@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { getRecommendedVenues, getLiveMatches } from '../services/mock/venueService';
+import { formatCurrency } from '../utils/format';
 
 export default function Home() {
   const [recommendedVenues, setRecommendedVenues] = useState([]);
@@ -131,9 +133,9 @@ export default function Home() {
             <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Recommended for You</h2>
             <p className="text-base text-slate-500 font-medium">Top rated venues matching your playing style</p>
           </div>
-          <a className="text-primary text-sm font-black flex items-center gap-1 hover:gap-2 transition-all" href="#">
+          <Link className="text-primary text-sm font-black flex items-center gap-1 hover:gap-2 transition-all" to="/find-courts">
             See All Venues <span className="material-symbols-outlined text-base">arrow_forward</span>
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -160,10 +162,15 @@ export default function Home() {
                 </p>
                 <div className="flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-700">
                   <div>
-                    <span className="text-2xl font-black text-primary">${venue.pricePerHour}</span>
+                    <span className="text-2xl font-black text-primary">{formatCurrency(venue.pricePerHour)}</span>
                     <span className="text-xs font-bold text-slate-400 uppercase tracking-tighter">/ hour</span>
                   </div>
-                  <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-xl text-sm font-black hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all">Book Now</button>
+                  <Link
+                    to={`/venues/${venue.id}`}
+                    className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-xl text-sm font-black hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all"
+                  >
+                    Book Now
+                  </Link>
                 </div>
               </div>
             </div>
