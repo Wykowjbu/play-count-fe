@@ -23,7 +23,7 @@ import ProfileBookings from './pages/Profile/ProfileBookings';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         {/* Public Routes */}
         <Route element={<PublicLayout />}>

@@ -6,6 +6,10 @@ import { cwd } from 'node:process';
 const appSource = readFileSync(join(cwd(), 'src', 'App.jsx'), 'utf8');
 
 describe('App routes', () => {
+  it('uses the Vite base path as the browser router basename for GitHub Pages', () => {
+    expect(appSource).toContain('<BrowserRouter basename={import.meta.env.BASE_URL}>');
+  });
+
   it('registers the missing profile and business management routes', () => {
     expect(appSource).toContain('path="/profile/detail"');
     expect(appSource).toContain('path="/profile/bookings"');
