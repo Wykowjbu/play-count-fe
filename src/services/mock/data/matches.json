@@ -4,6 +4,8 @@
     "title": "Giao lưu cầu lông Quận 9",
     "sport": "Badminton",
     "gameType": "Men's Doubles",
+    "venueName": "San Cau Long Binh Minh",
+    "imageUrl": "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=2070&auto=format&fit=crop",
     "scheduleTime": "Today, 17:00",
     "players": [
       { "id": 101, "name": "Anh Tuấn", "avatarUrl": "https://i.pravatar.cc/150?u=101" },
@@ -18,8 +20,10 @@
   {
     "id": 2,
     "title": "Pickleball for Beginners",
-    "sport": "Tennis",
+    "sport": "Pickleball",
     "gameType": "Mixed Doubles",
+    "venueName": "Pickleball Center Quan 7",
+    "imageUrl": "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?q=80&w=2070&auto=format&fit=crop",
     "scheduleTime": "Today, 18:30",
     "players": [
       { "id": 103, "name": "Hoàng Long", "avatarUrl": "https://i.pravatar.cc/150?u=103" }
@@ -35,6 +39,8 @@
     "title": "Kèo Tennis Quận 2 - Hardcore",
     "sport": "Tennis",
     "gameType": "Single Match",
+    "venueName": "San Tennis Ngoi Sao",
+    "imageUrl": "https://images.unsplash.com/photo-1595435066319-7057fe20b050?q=80&w=2070&auto=format&fit=crop",
     "scheduleTime": "Tomorrow, 06:00",
     "players": [
       { "id": 104, "name": "Quốc Huy", "avatarUrl": "https://i.pravatar.cc/150?u=104" }
@@ -50,6 +56,8 @@
     "title": "Cầu lông sáng sớm - Thủ Đức",
     "sport": "Badminton",
     "gameType": "Men's Doubles",
+    "venueName": "Clb Cau Long Thu Duc",
+    "imageUrl": "https://images.unsplash.com/photo-1521537634581-0dced2fee2ef?q=80&w=2070&auto=format&fit=crop",
     "scheduleTime": "Tomorrow, 05:30",
     "players": [
       { "id": 105, "name": "Văn Nam", "avatarUrl": "https://i.pravatar.cc/150?u=105" },

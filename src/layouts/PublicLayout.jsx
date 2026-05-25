@@ -79,6 +79,13 @@ export default function PublicLayout() {
                         </button>
                       ))}
                     </div>
+                    <Link
+                      to="/profile/notifications"
+                      onClick={() => setActivePanel(null)}
+                      className="mt-3 flex items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-xs font-black uppercase tracking-widest text-white transition-colors hover:bg-primary"
+                    >
+                      View all notifications
+                    </Link>
                   </div>
                 )}
               </div>
@@ -105,7 +112,11 @@ export default function PublicLayout() {
                       {[
                         ['Profile Detail', '/profile/detail', 'account_circle'],
                         ['My Bookings', '/profile/bookings', 'event_available'],
+                        ['Favorites', '/profile/favorites', 'favorite'],
+                        ['Notifications', '/profile/notifications', 'notifications'],
+                        ['Security', '/profile/security', 'shield'],
                         ['Owner Center', '/business/revenue', 'stadium'],
+                        ['Admin Portal', '/admin/dashboard', 'admin_panel_settings'],
                       ].map(([label, path, icon]) => (
                         <Link
                           key={label}

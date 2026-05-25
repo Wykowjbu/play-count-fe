@@ -1,4 +1,13 @@
+import { useEffect, useState } from 'react';
+import { getOccupancyReport } from '../../services/mock/platformService';
+
 export default function Analytics() {
+  const [occupancy, setOccupancy] = useState([]);
+
+  useEffect(() => {
+    getOccupancyReport().then(setOccupancy);
+  }, []);
+
   const metrics = [
     { label: 'Peak Hour', value: '18:00', icon: 'schedule' },
     { label: 'Top Sport', value: 'Pickleball', icon: 'sports_tennis' },
@@ -10,7 +19,7 @@ export default function Analytics() {
       <div>
         <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Insights</p>
         <h1 className="text-3xl font-black text-slate-900">Analytics</h1>
-        <p className="text-sm font-bold text-slate-500 mt-2">Operational preview for court demand and customer behavior.</p>
+        <p className="text-sm font-bold text-slate-500 mt-2">Operational preview for occupancy report and customer behavior endpoints.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -27,10 +36,10 @@ export default function Analytics() {
 
       <div className="bg-white border border-slate-100 rounded-3xl p-8 shadow-sm">
         <div className="flex items-end gap-4 h-64">
-          {[42, 58, 46, 72, 88, 96, 76].map((value, index) => (
-            <div key={index} className="flex-1 flex flex-col items-center gap-3">
-              <div className="w-full rounded-t-2xl bg-primary/80" style={{ height: `${value}%` }}></div>
-              <span className="text-[10px] font-black text-slate-400 uppercase">D{index + 1}</span>
+          {occupancy.map((bucket) => (
+            <div key={bucket.label} className="flex-1 flex flex-col items-center gap-3">
+              <div className="w-full rounded-t-2xl bg-primary/80" style={{ height: `${bucket.value}%` }}></div>
+              <span className="text-[10px] font-black text-slate-400 uppercase">{bucket.label}</span>
             </div>
           ))}
         </div>

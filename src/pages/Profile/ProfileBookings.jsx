@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getPlayerBookings } from '../../services/mock/profileService';
 import { formatCurrency } from '../../utils/format';
 
@@ -46,7 +47,7 @@ export default function ProfileBookings() {
         </div>
         <div className="divide-y divide-slate-100">
           {bookings.map((booking) => (
-            <div key={booking.id} className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr_1fr_120px] gap-4 px-6 py-5 items-center hover:bg-slate-50 transition-colors">
+            <Link key={booking.id} to={`/profile/bookings/${booking.id}`} className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr_1fr_120px] gap-4 px-6 py-5 items-center hover:bg-slate-50 transition-colors">
               <div>
                 <p className="text-sm font-black text-slate-900">{booking.venueName}</p>
                 <p className="text-xs font-bold text-primary mt-1">{booking.sport}</p>
@@ -64,7 +65,7 @@ export default function ProfileBookings() {
                   {booking.status}
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

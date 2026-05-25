@@ -36,7 +36,7 @@ export default function RegisterOwner() {
 
     try {
       await authService.register({ ...formData, role: 'Owner' });
-      navigate('/business/revenue');
+      navigate('/verify-otp');
     } catch {
       setError('Registration failed');
     }

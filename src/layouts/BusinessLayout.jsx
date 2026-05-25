@@ -5,9 +5,11 @@ export default function BusinessLayout() {
 
   const navItems = [
     { name: 'Dashboard', path: '/business/revenue', icon: 'dashboard' },
+    { name: 'Venues', path: '/business/venues', icon: 'storefront' },
     { name: 'Manage Courts', path: '/business/courts', icon: 'stadium' },
     { name: 'Bookings', path: '/business/bookings', icon: 'event_available' },
     { name: 'Analytics', path: '/business/analytics', icon: 'bar_chart' },
+    { name: 'Payments', path: '/business/payments', icon: 'payments' },
     { name: 'Settings', path: '/business/settings', icon: 'settings' },
   ];
 
@@ -40,7 +42,11 @@ export default function BusinessLayout() {
         </nav>
 
         <div className="hidden lg:block p-4 border-t border-gray-800">
-          <button className="flex items-center space-x-3 px-4 py-3 w-full text-gray-400 hover:text-white transition-colors">
+          <Link to="/admin/dashboard" className="mb-2 flex items-center space-x-3 px-4 py-3 w-full text-gray-400 hover:text-white transition-colors">
+            <span className="material-symbols-outlined">admin_panel_settings</span>
+            <span className="font-medium">Admin Portal</span>
+          </Link>
+          <button className="flex items-center space-x-3 px-4 py-3 w-full text-gray-400 hover:text-white transition-colors cursor-pointer">
             <span className="material-symbols-outlined">logout</span>
             <span className="font-medium">Sign Out</span>
           </button>

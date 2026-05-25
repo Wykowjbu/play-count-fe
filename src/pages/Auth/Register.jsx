@@ -36,7 +36,7 @@ export default function Register() {
 
     try {
       await authService.register({ ...formData, role: 'Player' });
-      navigate('/');
+      navigate('/verify-otp');
     } catch {
       setError('Registration failed');
     }

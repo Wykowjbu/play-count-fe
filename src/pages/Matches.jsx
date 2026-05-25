@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import * as venueService from '../services/mock/venueService';
 import { formatCurrency } from '../utils/format';
 
@@ -177,9 +178,12 @@ export default function Matches() {
                       </div>
                     </div>
                     <div className="mt-auto">
-                      <button className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-4 rounded-xl font-black hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all shadow-xl active:scale-[0.98] cursor-pointer">
-                        Request to Join
-                      </button>
+                      <Link
+                        to={`/matches/${match.id}`}
+                        className="block w-full rounded-xl bg-slate-900 py-4 text-center font-black text-white shadow-xl transition-all hover:bg-primary active:scale-[0.98] dark:bg-white dark:text-slate-900 dark:hover:bg-primary dark:hover:text-white"
+                      >
+                        View Match
+                      </Link>
                     </div>
                   </div>
                 </div>
