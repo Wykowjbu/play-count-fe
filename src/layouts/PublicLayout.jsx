@@ -4,8 +4,8 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 const navItems = [
   { name: 'Find Courts', path: '/find-courts' },
   { name: 'Join Matches', path: '/matches' },
-  { name: 'Leaderboard', path: '/leaderboard' },
   { name: 'My Bookings', path: '/profile/bookings' },
+  { name: 'Leaderboard', path: '/leaderboard' },
 ];
 
 const navLinkClass = ({ isActive }) =>

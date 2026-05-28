@@ -5,11 +5,11 @@ export default function BusinessLayout() {
 
   const navItems = [
     { name: 'Dashboard', path: '/business/revenue', icon: 'dashboard' },
+    { name: 'Bookings', path: '/business/bookings', icon: 'event_available' },
     { name: 'Venues', path: '/business/venues', icon: 'storefront' },
     { name: 'Manage Courts', path: '/business/courts', icon: 'stadium' },
-    { name: 'Bookings', path: '/business/bookings', icon: 'event_available' },
-    { name: 'Analytics', path: '/business/analytics', icon: 'bar_chart' },
     { name: 'Payments', path: '/business/payments', icon: 'payments' },
+    { name: 'Analytics', path: '/business/analytics', icon: 'bar_chart' },
     { name: 'Settings', path: '/business/settings', icon: 'settings' },
   ];
 
