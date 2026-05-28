@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import MockModal, { MockField, TextArea, TextInput } from '../components/MockModal';
 import { getMatchDetail } from '../services/mock/platformService';
 import { formatCurrency } from '../utils/format';
 
@@ -12,6 +13,7 @@ const requestClasses = {
 export default function MatchDetails() {
   const { id } = useParams();
   const [match, setMatch] = useState(null);
+  const [activeAction, setActiveAction] = useState(null);
 
   useEffect(() => {
     getMatchDetail(id).then(setMatch);
@@ -27,6 +29,60 @@ export default function MatchDetails() {
 
   const spotsLeft = match.maxPlayers - match.participants.length;
 
+  const confirmMatchAction = () => {
+    if (activeAction.type === 'join') {
+      setMatch((currentMatch) => ({
+        ...currentMatch,
+        joinRequests: [
+          ...currentMatch.joinRequests,
+          { id: `REQ-${Date.now()}`, name: 'Nguyen Van Nguoi Choi', message: 'Mock join request from current player.', status: 'Pending' },
+        ],
+      }));
+    }
+
+    if (activeAction.type === 'cancel') {
+      setMatch((currentMatch) => ({ ...currentMatch, status: 'Cancelled' }));
+    }
+
+    if (activeAction.type === 'leave') {
+      setMatch((currentMatch) => ({
+        ...currentMatch,
+        participants: currentMatch.participants.filter((player) => player.id !== activeAction.player.id),
+      }));
+    }
+
+    if (activeAction.type === 'invite') {
+      setMatch((currentMatch) => ({
+        ...currentMatch,
+        invitations: [...currentMatch.invitations, { id: `INV-${Date.now()}`, name: 'Mock Invited Player', status: 'Sent' }],
+      }));
+    }
+
+    if (activeAction.type === 'approve') {
+      setMatch((currentMatch) => ({
+        ...currentMatch,
+        participants: [
+          ...currentMatch.participants,
+          { id: Date.now(), name: activeAction.request.name, role: 'Player' },
+        ],
+        joinRequests: currentMatch.joinRequests.map((request) =>
+          request.id === activeAction.request.id ? { ...request, status: 'Approved' } : request
+        ),
+      }));
+    }
+
+    if (activeAction.type === 'reject') {
+      setMatch((currentMatch) => ({
+        ...currentMatch,
+        joinRequests: currentMatch.joinRequests.map((request) =>
+          request.id === activeAction.request.id ? { ...request, status: 'Rejected' } : request
+        ),
+      }));
+    }
+
+    setActiveAction(null);
+  };
+
   return (
     <main className="mx-auto max-w-7xl space-y-8 px-6 py-10">
       <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -41,10 +97,18 @@ export default function MatchDetails() {
             <p className="mt-3 text-base font-bold text-slate-500">{match.venueName} • {match.courtName} • {match.scheduleTime}</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button type="button" className="h-12 rounded-xl bg-primary px-5 text-sm font-black text-white transition-all hover:brightness-110 cursor-pointer">
+            <button
+              type="button"
+              onClick={() => setActiveAction({ type: 'join' })}
+              className="h-12 rounded-xl bg-primary px-5 text-sm font-black text-white transition-all hover:brightness-110 cursor-pointer"
+            >
               Request to join
             </button>
-            <button type="button" className="h-12 rounded-xl border border-rose-200 px-5 text-sm font-black text-rose-600 transition-colors hover:bg-rose-50 cursor-pointer">
+            <button
+              type="button"
+              onClick={() => setActiveAction({ type: 'cancel' })}
+              className="h-12 rounded-xl border border-rose-200 px-5 text-sm font-black text-rose-600 transition-colors hover:bg-rose-50 cursor-pointer"
+            >
               Cancel match
             </button>
           </div>
@@ -79,7 +143,11 @@ export default function MatchDetails() {
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-black text-slate-900">Participants</h2>
-              <button type="button" className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-black text-slate-700 transition-colors hover:border-primary hover:text-primary cursor-pointer">
+              <button
+                type="button"
+                onClick={() => setActiveAction({ type: 'invite' })}
+                className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-black text-slate-700 transition-colors hover:border-primary hover:text-primary cursor-pointer"
+              >
                 Invite users
               </button>
             </div>
@@ -90,7 +158,11 @@ export default function MatchDetails() {
                     <p className="text-sm font-black text-slate-900">{player.name}</p>
                     <p className="mt-1 text-xs font-bold text-slate-500">{player.role}</p>
                   </div>
-                  <button type="button" className="text-xs font-black uppercase tracking-widest text-rose-500 hover:underline cursor-pointer">
+                  <button
+                    type="button"
+                    onClick={() => setActiveAction({ type: 'leave', player })}
+                    className="text-xs font-black uppercase tracking-widest text-rose-500 hover:underline cursor-pointer"
+                  >
                     Leave
                   </button>
                 </div>
@@ -113,10 +185,18 @@ export default function MatchDetails() {
                     </span>
                   </div>
                   <div className="mt-4 flex gap-3">
-                    <button type="button" className="h-10 rounded-xl bg-primary px-4 text-xs font-black uppercase tracking-widest text-white cursor-pointer">
+                    <button
+                      type="button"
+                      onClick={() => setActiveAction({ type: 'approve', request })}
+                      className="h-10 rounded-xl bg-primary px-4 text-xs font-black uppercase tracking-widest text-white cursor-pointer"
+                    >
                       Approve
                     </button>
-                    <button type="button" className="h-10 rounded-xl border border-slate-200 px-4 text-xs font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 cursor-pointer">
+                    <button
+                      type="button"
+                      onClick={() => setActiveAction({ type: 'reject', request })}
+                      className="h-10 rounded-xl border border-slate-200 px-4 text-xs font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 cursor-pointer"
+                    >
                       Reject
                     </button>
                   </div>
@@ -140,6 +220,18 @@ export default function MatchDetails() {
           </div>
         </div>
       </div>
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow="Matchmaking action"
+        title={matchActionCopy[activeAction?.type]?.title || 'Match Action'}
+        description={matchActionCopy[activeAction?.type]?.description}
+        confirmLabel={matchActionCopy[activeAction?.type]?.confirm || 'Confirm'}
+        onClose={() => setActiveAction(null)}
+        onConfirm={confirmMatchAction}
+      >
+        <MatchActionBody action={activeAction} />
+      </MockModal>
     </main>
   );
 }
@@ -152,6 +244,75 @@ function Summary({ label, value, icon }) {
       </div>
       <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</p>
       <p className="mt-1 text-sm font-black text-slate-900">{value}</p>
+    </div>
+  );
+}
+
+const matchActionCopy = {
+  join: {
+    title: 'Request to Join Match',
+    description: 'Mock POST /api/matches/{id}/join with optional message.',
+    confirm: 'Send request',
+  },
+  cancel: {
+    title: 'Cancel Match',
+    description: 'Host-only mock cancel action.',
+    confirm: 'Cancel match',
+  },
+  invite: {
+    title: 'Invite Players',
+    description: 'Mock invite users endpoint for host.',
+    confirm: 'Send invite',
+  },
+  leave: {
+    title: 'Leave Match',
+    description: 'Mock leave endpoint. Host must cancel instead of leaving.',
+    confirm: 'Leave match',
+  },
+  approve: {
+    title: 'Approve Join Request',
+    description: 'Mock host approval endpoint.',
+    confirm: 'Approve request',
+  },
+  reject: {
+    title: 'Reject Join Request',
+    description: 'Mock host rejection endpoint with optional reason.',
+    confirm: 'Reject request',
+  },
+};
+
+function MatchActionBody({ action }) {
+  if (action?.type === 'invite') {
+    return (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <MockField label="Player IDs">
+          <TextInput defaultValue="205, 206, 207" />
+        </MockField>
+        <MockField label="Message">
+          <TextInput defaultValue="Want to join our match?" />
+        </MockField>
+      </div>
+    );
+  }
+
+  if (action?.type === 'approve' || action?.type === 'reject') {
+    return (
+      <div className="space-y-4">
+        <MockField label="Requester">
+          <TextInput defaultValue={action.request.name} readOnly />
+        </MockField>
+        <MockField label={action.type === 'reject' ? 'Reject reason' : 'Host note'}>
+          <TextArea defaultValue={action.type === 'reject' ? 'Team is full for this session.' : 'Approved for current match.'} />
+        </MockField>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <MockField label="Message">
+        <TextArea defaultValue={action?.type === 'cancel' ? 'Schedule conflict.' : 'I can arrive early and split court cost.'} />
+      </MockField>
     </div>
   );
 }

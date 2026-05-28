@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import MockModal, { MockField, TextInput } from '../../components/MockModal';
 import { getPlayerBookings } from '../../services/mock/profileService';
 import { formatCurrency } from '../../utils/format';
 
@@ -11,10 +12,30 @@ const statusClasses = {
 
 export default function ProfileBookings() {
   const [bookings, setBookings] = useState([]);
+  const [activeAction, setActiveAction] = useState(null);
 
   useEffect(() => {
     getPlayerBookings().then(setBookings);
   }, []);
+
+  const confirmBookingListAction = () => {
+    if (activeAction === 'new') {
+      setBookings((currentBookings) => [
+        {
+          id: `BK-${2400 + currentBookings.length + 1}`,
+          venueName: 'PlayCourt Son Tra',
+          courtName: 'Pickleball A1',
+          sport: 'Pickleball',
+          date: '2026-05-26',
+          time: '20:00 - 21:00',
+          status: 'Pending',
+          price: 180000,
+        },
+        ...currentBookings,
+      ]);
+    }
+    setActiveAction(null);
+  };
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-10 space-y-6">
@@ -28,10 +49,18 @@ export default function ProfileBookings() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button className="h-11 px-4 rounded-xl border border-slate-200 bg-white text-sm font-black text-slate-700 hover:border-primary hover:text-primary transition-colors cursor-pointer">
+            <button
+              type="button"
+              onClick={() => setActiveAction('past')}
+              className="h-11 px-4 rounded-xl border border-slate-200 bg-white text-sm font-black text-slate-700 hover:border-primary hover:text-primary transition-colors cursor-pointer"
+            >
               Past bookings
             </button>
-            <button className="h-11 px-5 rounded-xl bg-primary text-white text-sm font-black hover:brightness-110 transition-all cursor-pointer">
+            <button
+              type="button"
+              onClick={() => setActiveAction('new')}
+              className="h-11 px-5 rounded-xl bg-primary text-white text-sm font-black hover:brightness-110 transition-all cursor-pointer"
+            >
               New Booking
             </button>
           </div>
@@ -69,6 +98,36 @@ export default function ProfileBookings() {
           ))}
         </div>
       </div>
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow="Player booking"
+        title={activeAction === 'past' ? 'Past Booking Filters' : 'Create Booking'}
+        description={activeAction === 'past' ? 'Mock filters for GET /api/bookings status/from/to.' : 'Mock booking hold slot form.'}
+        confirmLabel={activeAction === 'past' ? 'Apply filters' : 'Create hold slot'}
+        onClose={() => setActiveAction(null)}
+        onConfirm={confirmBookingListAction}
+      >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <MockField label={activeAction === 'past' ? 'From date' : 'Venue'}>
+            <TextInput type={activeAction === 'past' ? 'date' : 'text'} defaultValue={activeAction === 'past' ? '2026-05-01' : 'PlayCourt Son Tra'} />
+          </MockField>
+          <MockField label={activeAction === 'past' ? 'To date' : 'Court'}>
+            <TextInput type={activeAction === 'past' ? 'date' : 'text'} defaultValue={activeAction === 'past' ? '2026-05-25' : 'Pickleball A1'} />
+          </MockField>
+          <MockField label="Status">
+            <select className="auth-field" defaultValue={activeAction === 'past' ? 'Completed' : 'Pending'}>
+              <option>Pending</option>
+              <option>Confirmed</option>
+              <option>Completed</option>
+              <option>Cancelled</option>
+            </select>
+          </MockField>
+          <MockField label="Time">
+            <TextInput defaultValue={activeAction === 'past' ? 'All day' : '20:00 - 21:00'} />
+          </MockField>
+        </div>
+      </MockModal>
     </section>
   );
 }

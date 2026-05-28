@@ -1,4 +1,8 @@
+import { useState } from 'react';
+import MockModal, { MockField, TextArea, TextInput } from '../../components/MockModal';
+
 export default function ProfileSecurity() {
+  const [activeAction, setActiveAction] = useState(null);
   const sessions = [
     { device: 'Chrome on Windows', location: 'Da Nang, Vietnam', status: 'Current session' },
     { device: 'Safari on iPhone', location: 'Ho Chi Minh City, Vietnam', status: 'Refresh token active' },
@@ -25,7 +29,11 @@ export default function ProfileSecurity() {
               </label>
             ))}
           </div>
-          <button type="button" className="mt-6 h-12 rounded-2xl bg-slate-900 px-6 text-sm font-black text-white transition-colors hover:bg-primary cursor-pointer">
+          <button
+            type="button"
+            onClick={() => setActiveAction('password')}
+            className="mt-6 h-12 rounded-2xl bg-slate-900 px-6 text-sm font-black text-white transition-colors hover:bg-primary cursor-pointer"
+          >
             Update password
           </button>
         </form>
@@ -36,7 +44,11 @@ export default function ProfileSecurity() {
               <h2 className="text-xl font-black text-slate-900">Active sessions</h2>
               <p className="mt-1 text-sm font-bold text-slate-500">Refresh tokens are rotated in the mock auth model.</p>
             </div>
-            <button type="button" className="h-11 rounded-xl border border-rose-200 px-4 text-sm font-black text-rose-600 transition-colors hover:bg-rose-50 cursor-pointer">
+            <button
+              type="button"
+              onClick={() => setActiveAction('logout')}
+              className="h-11 rounded-xl border border-rose-200 px-4 text-sm font-black text-rose-600 transition-colors hover:bg-rose-50 cursor-pointer"
+            >
               Logout all
             </button>
           </div>
@@ -61,6 +73,31 @@ export default function ProfileSecurity() {
           </div>
         </div>
       </div>
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow="Security endpoint"
+        title={activeAction === 'logout' ? 'Logout All Sessions' : 'Change Password'}
+        description={activeAction === 'logout' ? 'Mock logout endpoint revokes refresh tokens.' : 'Mock POST /api/auth/change-password.'}
+        confirmLabel={activeAction === 'logout' ? 'Logout all sessions' : 'Update password'}
+        onClose={() => setActiveAction(null)}
+        onConfirm={() => setActiveAction(null)}
+      >
+        {activeAction === 'logout' ? (
+          <MockField label="Admin note">
+            <TextArea defaultValue="All refresh tokens will be revoked in the mock preview." />
+          </MockField>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <MockField label="Current password">
+              <TextInput type="password" defaultValue="password" />
+            </MockField>
+            <MockField label="New password">
+              <TextInput type="password" defaultValue="new-password" />
+            </MockField>
+          </div>
+        )}
+      </MockModal>
     </section>
   );
 }

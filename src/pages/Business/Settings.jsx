@@ -1,4 +1,9 @@
+import { useState } from 'react';
+import MockModal, { MockField, TextArea, TextInput } from '../../components/MockModal';
+
 export default function Settings() {
+  const [showSaveModal, setShowSaveModal] = useState(false);
+
   return (
     <div className="p-6 lg:p-8 space-y-8 max-w-5xl mx-auto">
       <div>
@@ -21,10 +26,39 @@ export default function Settings() {
             />
           </label>
         ))}
-        <button className="h-12 px-6 rounded-2xl bg-primary text-white text-sm font-black hover:brightness-110 transition-all">
+        <button
+          type="button"
+          onClick={() => setShowSaveModal(true)}
+          className="h-12 px-6 rounded-2xl bg-primary text-white text-sm font-black hover:brightness-110 transition-all cursor-pointer"
+        >
           Save Settings
         </button>
       </div>
+
+      <MockModal
+        open={showSaveModal}
+        eyebrow="Owner settings"
+        title="Save Business Settings"
+        description="Mock settings save for facility defaults and booking configuration."
+        confirmLabel="Save settings"
+        onClose={() => setShowSaveModal(false)}
+        onConfirm={() => setShowSaveModal(false)}
+      >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <MockField label="Facility name">
+            <TextInput defaultValue="PlayCourt Biz Demo" />
+          </MockField>
+          <MockField label="Booking window">
+            <TextInput defaultValue="14 days" />
+          </MockField>
+          <MockField label="Cancellation cutoff">
+            <TextInput defaultValue="12 hours before start" />
+          </MockField>
+          <MockField label="Default note">
+            <TextArea defaultValue="Mock configuration saved locally for the FE preview." />
+          </MockField>
+        </div>
+      </MockModal>
     </div>
   );
 }

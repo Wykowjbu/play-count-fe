@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function VerifyOtp() {
   const [verified, setVerified] = useState(false);
+  const [resent, setResent] = useState(false);
 
   return (
     <div className="auth-card">
@@ -46,10 +47,15 @@ export default function VerifyOtp() {
           </label>
           <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
             <span className="text-xs font-black uppercase tracking-widest text-slate-400">Throttle</span>
-            <button type="button" className="text-xs font-black uppercase tracking-widest text-primary hover:underline cursor-pointer">
+            <button
+              type="button"
+              onClick={() => setResent(true)}
+              className="text-xs font-black uppercase tracking-widest text-primary hover:underline cursor-pointer"
+            >
               Resend in 60s
             </button>
           </div>
+          {resent && <p className="text-xs font-bold text-emerald-600">Mock OTP resent successfully.</p>}
           <button type="submit" className="auth-primary-action">
             Activate Account
             <span className="material-symbols-outlined text-xl">verified</span>

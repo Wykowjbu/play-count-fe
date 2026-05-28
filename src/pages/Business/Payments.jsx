@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import MockModal, { MockField, TextArea, TextInput } from '../../components/MockModal';
 import { getOwnerPayments, getTransactions } from '../../services/mock/platformService';
 import { formatCurrency } from '../../utils/format';
 
@@ -12,6 +13,7 @@ const statusClasses = {
 export default function Payments() {
   const [payments, setPayments] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [activeAction, setActiveAction] = useState(null);
 
   useEffect(() => {
     getOwnerPayments().then(setPayments);
@@ -22,6 +24,17 @@ export default function Payments() {
   const verifiedTotal = transactions
     .filter((transaction) => transaction.status === 'Verified')
     .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+  const confirmPaymentAction = () => {
+    if (activeAction?.payment) {
+      setPayments((currentPayments) =>
+        currentPayments.map((payment) =>
+          payment.id === activeAction.payment.id ? { ...payment, status: activeAction.status } : payment
+        )
+      );
+    }
+    setActiveAction(null);
+  };
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 p-6 lg:p-8">
@@ -59,10 +72,18 @@ export default function Payments() {
                 <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${statusClasses[payment.status]}`}>
                   {payment.status}
                 </span>
-                <button type="button" className="rounded-xl bg-primary px-3 py-2 text-xs font-black uppercase tracking-widest text-white cursor-pointer">
+                <button
+                  type="button"
+                  onClick={() => setActiveAction({ payment, status: 'Verified' })}
+                  className="rounded-xl bg-primary px-3 py-2 text-xs font-black uppercase tracking-widest text-white cursor-pointer"
+                >
                   Verify
                 </button>
-                <button type="button" className="rounded-xl border border-rose-200 px-3 py-2 text-xs font-black uppercase tracking-widest text-rose-600 hover:bg-rose-50 cursor-pointer">
+                <button
+                  type="button"
+                  onClick={() => setActiveAction({ payment, status: 'Rejected' })}
+                  className="rounded-xl border border-rose-200 px-3 py-2 text-xs font-black uppercase tracking-widest text-rose-600 hover:bg-rose-50 cursor-pointer"
+                >
                   Reject
                 </button>
               </div>
@@ -74,7 +95,11 @@ export default function Payments() {
       <section className="rounded-3xl border border-slate-200 bg-white shadow-sm">
         <div className="flex flex-col gap-3 border-b border-slate-100 p-6 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-xl font-black text-slate-900">Transaction log</h2>
-          <button type="button" className="h-10 rounded-xl border border-slate-200 px-4 text-xs font-black uppercase tracking-widest text-slate-600 hover:border-primary hover:text-primary cursor-pointer">
+          <button
+            type="button"
+            onClick={() => setActiveAction({ export: true, status: 'Exported' })}
+            className="h-10 rounded-xl border border-slate-200 px-4 text-xs font-black uppercase tracking-widest text-slate-600 hover:border-primary hover:text-primary cursor-pointer"
+          >
             Export CSV
           </button>
         </div>
@@ -109,6 +134,39 @@ export default function Payments() {
           </table>
         </div>
       </section>
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow={activeAction?.export ? 'Transaction export' : 'Payment review'}
+        title={activeAction?.export ? 'Export Transaction Log' : `${activeAction?.status || ''} Payment`}
+        description={
+          activeAction?.export
+            ? 'Mock export action for owner transaction log.'
+            : `${activeAction?.payment?.id || ''} will be marked as ${activeAction?.status || ''} in local mock state.`
+        }
+        confirmLabel={activeAction?.export ? 'Generate mock CSV' : 'Confirm action'}
+        onClose={() => setActiveAction(null)}
+        onConfirm={confirmPaymentAction}
+      >
+        {activeAction?.export ? (
+          <div className="rounded-2xl bg-slate-50 p-5 text-sm font-bold leading-6 text-slate-600">
+            File name: owner-transactions-2026-05.csv
+            <br />
+            Rows: {transactions.length}
+            <br />
+            Columns: Date, Venue, Type, Amount, Status
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <MockField label="Payment ID">
+              <TextInput defaultValue={activeAction?.payment?.id} readOnly />
+            </MockField>
+            <MockField label={activeAction?.status === 'Rejected' ? 'Reject reason' : 'Verification note'}>
+              <TextArea defaultValue={activeAction?.status === 'Rejected' ? 'Transfer amount does not match booking.' : 'Payment proof matches transfer amount.'} />
+            </MockField>
+          </div>
+        )}
+      </MockModal>
     </div>
   );
 }

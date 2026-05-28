@@ -1,28 +1,137 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #22c55e;
-  --color-background-light: #f8fafc;
-  --color-background-dark: #0f172a;
-  --font-display: Lexend, sans-serif;
+  --color-primary: #9fe870;
+  --color-background-light: #e8ebe6;
+  --color-background-dark: #0e0f0c;
+  --color-slate-50: #f6f8f3;
+  --color-slate-100: #e8ebe6;
+  --color-slate-200: #d8ddd3;
+  --color-slate-300: #c5cbbb;
+  --color-slate-400: #868685;
+  --color-slate-500: #6a6d68;
+  --color-slate-600: #454745;
+  --color-slate-700: #30332f;
+  --color-slate-800: #1f211d;
+  --color-slate-900: #0e0f0c;
+  --color-slate-950: #0e0f0c;
+  --color-gray-50: #f6f8f3;
+  --color-gray-100: #e8ebe6;
+  --color-gray-200: #d8ddd3;
+  --color-gray-400: #868685;
+  --color-gray-500: #6a6d68;
+  --color-gray-600: #454745;
+  --color-gray-800: #30332f;
+  --color-gray-900: #0e0f0c;
+  --color-emerald-50: #e2f6d5;
+  --color-emerald-400: #c5edab;
+  --color-emerald-600: #054d28;
+  --color-green-50: #e2f6d5;
+  --color-green-600: #054d28;
+  --color-blue-50: #e8f7ff;
+  --color-blue-100: #d5f0ff;
+  --color-blue-600: #0076a8;
+  --color-amber-50: #fff4c2;
+  --color-amber-100: #ffe88a;
+  --color-amber-400: #ffd11a;
+  --color-amber-600: #b86700;
+  --color-rose-50: #ffe8e9;
+  --color-rose-200: #f4b4b8;
+  --color-rose-500: #d03238;
+  --color-rose-600: #a72027;
+  --color-red-500: #d03238;
+  --font-display: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 @layer base {
+  :root {
+    color: #0e0f0c;
+    background: #e8ebe6;
+    font-synthesis-weight: none;
+    text-rendering: geometricPrecision;
+  }
+
   body {
-    font-family: 'Lexend', sans-serif;
+    min-width: 320px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #e8ebe6;
+    color: #0e0f0c;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-black {
+    letter-spacing: 0;
+  }
+
+  h1,
+  .text-5xl,
+  .text-6xl,
+  .text-7xl {
+    font-weight: 900;
+    line-height: 0.9;
+  }
+
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  input,
+  select,
+  textarea {
+    color: #0e0f0c;
   }
 }
 
 @layer components {
   .auth-card {
-    @apply w-full rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-200/70 sm:p-8;
+    @apply w-full rounded-3xl border border-slate-900 bg-white p-6 sm:p-8;
   }
 
   .auth-field {
-    @apply h-13 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10;
+    @apply h-13 w-full rounded-xl border border-slate-900 bg-white px-4 text-sm font-semibold text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/20;
   }
 
   .auth-primary-action {
-    @apply inline-flex h-13 w-full items-center justify-center gap-2 rounded-2xl bg-slate-900 text-sm font-black text-white shadow-xl shadow-slate-200 transition-all hover:bg-primary active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70;
+    @apply inline-flex h-13 w-full items-center justify-center gap-2 rounded-3xl bg-primary text-sm font-black text-slate-900 transition-all hover:bg-[#cdffad] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70;
+  }
+
+  .wise-card {
+    @apply rounded-3xl bg-white p-6 text-slate-900;
+  }
+
+  .wise-button {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-3xl bg-primary px-6 text-sm font-black text-slate-900 transition-all hover:bg-[#cdffad] active:scale-[0.98];
+  }
+}
+
+@layer utilities {
+  .bg-primary.text-white,
+  .bg-primary .text-white {
+    color: #0e0f0c !important;
+  }
+
+  .tracking-tight,
+  .tracking-tighter,
+  .tracking-wider,
+  .tracking-widest,
+  .tracking-\[0\.2em\] {
+    letter-spacing: 0 !important;
+  }
+
+  .rounded-xl {
+    border-radius: 12px;
+  }
+
+  .rounded-2xl,
+  .rounded-3xl,
+  .rounded-\[2rem\],
+  .rounded-\[3rem\] {
+    border-radius: 24px;
   }
 }

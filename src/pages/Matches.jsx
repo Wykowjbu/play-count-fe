@@ -7,6 +7,7 @@ export default function Matches() {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateMatch, setShowCreateMatch] = useState(false);
+  const [searchApplied, setSearchApplied] = useState(false);
   const [filters, setFilters] = useState({
     sport: 'All Racket Sports',
     level: 'Any Level',
@@ -106,11 +107,20 @@ export default function Matches() {
               </div>
             </div>
 
-            <button className="bg-primary text-white font-black px-10 py-4 rounded-xl flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-primary/30 active:scale-[0.98] cursor-pointer">
+            <button
+              type="button"
+              onClick={() => setSearchApplied(true)}
+              className="bg-primary text-white font-black px-10 py-4 rounded-xl flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-primary/30 active:scale-[0.98] cursor-pointer"
+            >
               <span className="material-symbols-outlined">filter_list</span>
               <span>Search Matches</span>
             </button>
           </div>
+          {searchApplied && (
+            <p className="mt-3 rounded-xl bg-primary/10 px-4 py-3 text-xs font-black uppercase tracking-widest text-primary">
+              Mock filters applied: {filters.sport}, {filters.level}, {filters.distance}
+            </p>
+          )}
         </div>
 
         {/* Live Match Feed */}

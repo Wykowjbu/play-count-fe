@@ -1,13 +1,33 @@
 import { useEffect, useState } from 'react';
+import MockModal, { MockField, TextInput } from '../../components/MockModal';
 import { getOwnerBookings } from '../../services/mock/platformService';
 import { formatCurrency } from '../../utils/format';
 
 export default function Bookings() {
   const [bookings, setBookings] = useState([]);
+  const [showManualBooking, setShowManualBooking] = useState(false);
 
   useEffect(() => {
     getOwnerBookings().then(setBookings);
   }, []);
+
+  const addManualBooking = () => {
+    setBookings((currentBookings) => [
+      {
+        id: `BK-${2600 + currentBookings.length + 1}`,
+        customer: 'Walk-in Customer',
+        customerPhone: '0900 888 999',
+        venue: 'PlayCourt Son Tra',
+        court: 'Pickleball A1',
+        time: '2026-05-26 20:00 - 21:00',
+        amount: 180000,
+        status: 'Confirmed',
+        source: 'Phone booking',
+      },
+      ...currentBookings,
+    ]);
+    setShowManualBooking(false);
+  };
 
   return (
     <div className="p-6 lg:p-8 space-y-8 max-w-7xl mx-auto">
@@ -19,7 +39,11 @@ export default function Bookings() {
             Owner list, manual booking, hold slot, and cancel booking mock flows.
           </p>
         </div>
-        <button type="button" className="h-12 rounded-2xl bg-primary px-6 text-sm font-black text-white shadow-lg shadow-primary/20 hover:brightness-110 transition-all cursor-pointer">
+        <button
+          type="button"
+          onClick={() => setShowManualBooking(true)}
+          className="h-12 rounded-2xl bg-primary px-6 text-sm font-black text-white shadow-lg shadow-primary/20 hover:brightness-110 transition-all cursor-pointer"
+        >
           Create manual booking
         </button>
       </div>
@@ -63,6 +87,50 @@ export default function Bookings() {
           ))}
         </div>
       </div>
+
+      <MockModal
+        open={showManualBooking}
+        eyebrow="Owner booking"
+        title="Create Manual Booking"
+        description="Mock walk-in / phone booking form for /api/owner/bookings."
+        confirmLabel="Create booking"
+        onClose={() => setShowManualBooking(false)}
+        onConfirm={addManualBooking}
+      >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <MockField label="Customer name">
+            <TextInput defaultValue="Walk-in Customer" />
+          </MockField>
+          <MockField label="Customer phone">
+            <TextInput defaultValue="0900 888 999" />
+          </MockField>
+          <MockField label="Court">
+            <select className="auth-field" defaultValue="Pickleball A1">
+              <option>Pickleball A1</option>
+              <option>Pickleball A2</option>
+              <option>Tennis T1</option>
+            </select>
+          </MockField>
+          <MockField label="Date">
+            <TextInput type="date" defaultValue="2026-05-26" />
+          </MockField>
+          <MockField label="Start time">
+            <TextInput type="time" defaultValue="20:00" />
+          </MockField>
+          <MockField label="End time">
+            <TextInput type="time" defaultValue="21:00" />
+          </MockField>
+          <MockField label="Paid">
+            <select className="auth-field" defaultValue="Yes">
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </MockField>
+          <MockField label="Amount">
+            <TextInput defaultValue="180000" />
+          </MockField>
+        </div>
+      </MockModal>
     </div>
   );
 }

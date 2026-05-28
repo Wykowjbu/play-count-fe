@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import MockModal from '../components/MockModal';
 import { getRecommendedVenues, getLiveMatches } from '../services/mock/venueService';
 import { formatCurrency } from '../utils/format';
 
@@ -7,6 +8,8 @@ export default function Home() {
   const [recommendedVenues, setRecommendedVenues] = useState([]);
   const [liveMatches, setLiveMatches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [activeAction, setActiveAction] = useState(null);
 
   // Mock data for search form and active session
   const searchForm = {
@@ -49,48 +52,48 @@ export default function Home() {
   }
 
   return (
-    <main className="max-w-[1280px] mx-auto pb-24">
+    <main className="pb-24">
       {/* Hero Section */}
-      <section className="px-6 py-12">
-        <div className="flex flex-col gap-10 lg:flex-row items-center">
+      <section className="bg-background-light px-6 py-12 lg:py-16">
+        <div className="mx-auto flex max-w-[1280px] flex-col items-center gap-10 lg:flex-row">
           <div className="flex flex-col gap-8 lg:w-3/5">
             <div className="flex flex-col gap-4">
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full w-fit">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-1.5 text-slate-900">
                 <span className="material-symbols-outlined text-sm font-bold">local_fire_department</span>
                 <span className="text-xs font-black uppercase tracking-widest">Live in Da Nang</span>
               </div>
-              <h1 className="text-5xl sm:text-7xl font-black leading-[1.1] tracking-tight text-slate-900 dark:text-white">
-                The ultimate <span className="text-primary underline decoration-primary/30 underline-offset-8">Racket Hub</span> for Da Nang players.
+              <h1 className="text-6xl font-black leading-[0.9] tracking-tight text-slate-900 sm:text-8xl">
+                The ultimate <span className="text-slate-900 underline decoration-primary decoration-[12px] underline-offset-[-6px]">Racket Hub</span> for Da Nang players.
               </h1>
-              <p className="text-lg sm:text-xl text-slate-500 dark:text-slate-400 font-medium leading-relaxed max-w-2xl">
+              <p className="max-w-2xl text-lg font-medium leading-relaxed text-slate-600 sm:text-xl">
                 Discover top Pickleball, Tennis, and Badminton courts. Book instantly and connect with the local community in one seamless platform.
               </p>
             </div>
 
             {/* Search Form */}
-            <div className="flex flex-col gap-2 bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700">
+            <div className="flex flex-col gap-2 rounded-3xl border border-slate-900 bg-white p-3">
               <div className="flex flex-col sm:flex-row gap-2">
-                <div className="flex-1 flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-transparent focus-within:border-primary/50 transition-all">
+                <div className="flex flex-1 items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 transition-all focus-within:border-slate-900">
                   <span className="material-symbols-outlined text-primary">sports_tennis</span>
-                  <select className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full text-slate-800 dark:text-slate-200">
+                  <select className="w-full border-none bg-transparent text-sm font-bold text-slate-800 focus:ring-0">
                     <option>Pickleball</option>
                     <option>Tennis</option>
                     <option>Badminton</option>
                     <option>Padel</option>
                   </select>
                 </div>
-                <div className="flex-1 flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-transparent focus-within:border-primary/50 transition-all">
+                <div className="flex flex-1 items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 transition-all focus-within:border-slate-900">
                   <span className="material-symbols-outlined text-primary">location_on</span>
-                  <input className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full text-slate-800 dark:text-slate-200" placeholder="Where in Da Nang?" type="text" defaultValue={searchForm.location} />
+                  <input className="w-full border-none bg-transparent text-sm font-bold text-slate-800 focus:ring-0" placeholder="Where in Da Nang?" type="text" defaultValue={searchForm.location} />
                 </div>
-                <div className="flex-1 flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-transparent focus-within:border-primary/50 transition-all">
+                <div className="flex flex-1 items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 transition-all focus-within:border-slate-900">
                   <span className="material-symbols-outlined text-primary">calendar_today</span>
-                  <input className="bg-transparent border-none focus:ring-0 text-sm font-bold w-full text-slate-800 dark:text-slate-200" placeholder="Date & Time" type="text" defaultValue={searchForm.dateTime} />
+                  <input className="w-full border-none bg-transparent text-sm font-bold text-slate-800 focus:ring-0" placeholder="Date & Time" type="text" defaultValue={searchForm.dateTime} />
                 </div>
-                <button className="bg-primary text-white font-black py-4 px-8 rounded-xl flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/30">
+                <Link to="/find-courts" className="flex items-center justify-center gap-2 rounded-3xl bg-primary px-8 py-4 font-black text-slate-900 transition-all hover:bg-[#cdffad] active:scale-[0.98]">
                   <span className="material-symbols-outlined">search</span>
                   <span>Find Court</span>
-                </button>
+                </Link>
               </div>
             </div>
 
@@ -98,7 +101,7 @@ export default function Home() {
             <div className="flex gap-3 flex-wrap">
               <span className="text-sm font-bold text-slate-400 px-2 py-2">Popular:</span>
               {searchForm.popularFilters.map((filter, index) => (
-                <div key={index} className="flex h-10 items-center gap-x-2 rounded-full bg-slate-100 dark:bg-slate-800 px-5 cursor-pointer hover:bg-primary/10 hover:text-primary transition-all text-sm font-bold">
+                <div key={index} className="flex h-10 cursor-pointer items-center gap-x-2 rounded-full bg-white px-5 text-sm font-bold transition-all hover:bg-primary">
                   {filter}
                 </div>
               ))}
@@ -107,7 +110,8 @@ export default function Home() {
 
           {/* Featured Image */}
           <div className="w-full lg:w-2/5">
-            <div className="relative w-full aspect-square rounded-[2rem] overflow-hidden shadow-[0_32px_64px_-16px_rgba(34,197,94,0.2)] group">
+            <div className="group relative aspect-square w-full overflow-hidden rounded-3xl border border-slate-900 bg-white p-3">
+              <div className="relative h-full overflow-hidden rounded-3xl">
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent z-10"></div>
               <div className="absolute bottom-10 left-10 z-20 text-white max-w-[80%]">
                 <div className="bg-primary px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase mb-3 inline-block">Top Choice</div>
@@ -117,13 +121,15 @@ export default function Home() {
                 </p>
               </div>
               <div className="w-full h-full bg-center bg-cover transition-transform duration-1000 group-hover:scale-110" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAgQwmRDjIOVAtH52rQtI13iXatljPogfCBinWsE0E5nnLeV5r9otI9FpFDJsgBPdh2ETPyCuOudY6Pk0_aIluYwieV-R7C-y8FpGbg8YXPITjyump-rA6dgbVYdlGK08jQfgtUBbCL84rzSOczzVTI17nrIuuqGsKVV8CT6cx6kK1TsItwgDy1r-KnzozU_WnFXphFI52YYUme05hoOYilNCjEfBgMnDIES5ZJGotjBiW5tu4xH2BbsX0bmKKc19kb_ySjtID171aK")' }}></div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Recommended Venues */}
-      <section className="px-6 py-12">
+      <section className="bg-white px-6 py-12">
+        <div className="mx-auto max-w-[1280px]">
         <div className="flex items-end justify-between mb-8">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 text-primary">
@@ -145,7 +151,11 @@ export default function Home() {
                 {venue.badgeText && (
                   <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase shadow-lg">{venue.badgeText}</div>
                 )}
-                <button className="absolute top-4 right-4 bg-white/20 backdrop-blur-md text-white p-2.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">
+                <button
+                  type="button"
+                  onClick={() => setActiveAction(`favorite:${venue.name}`)}
+                  className="absolute top-4 right-4 bg-white/20 backdrop-blur-md text-white p-2.5 rounded-full hover:bg-white hover:text-rose-500 transition-all cursor-pointer"
+                >
                   <span className="material-symbols-outlined">favorite</span>
                 </button>
               </div>
@@ -167,7 +177,7 @@ export default function Home() {
                   </div>
                   <Link
                     to={`/venues/${venue.id}`}
-                    className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-xl text-sm font-black hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all"
+                className="rounded-3xl bg-slate-900 px-6 py-2.5 text-sm font-black text-white transition-all hover:bg-primary hover:text-slate-900"
                   >
                     Book Now
                   </Link>
@@ -176,20 +186,30 @@ export default function Home() {
             </div>
           ))}
         </div>
+        </div>
       </section>
 
       {/* Live Matchmaking */}
-      <section className="px-6 py-12 bg-slate-100 dark:bg-slate-900/50 rounded-[3rem] mx-6 shadow-inner">
+      <section className="mx-0 bg-background-light px-6 py-12">
+        <div className="mx-auto max-w-[1280px]">
         <div className="flex items-center justify-between mb-10 px-4">
           <div className="flex flex-col gap-2">
             <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Live Matchmaking</h2>
             <p className="text-base text-slate-500 font-medium">Join local players and level up your game</p>
           </div>
           <div className="flex gap-3">
-            <button className="p-3 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all shadow-sm">
+            <button
+              type="button"
+              onClick={() => setCarouselIndex((current) => Math.max(0, current - 1))}
+              className="p-3 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all shadow-sm cursor-pointer"
+            >
               <span className="material-symbols-outlined">chevron_left</span>
             </button>
-            <button className="p-3 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all shadow-sm">
+            <button
+              type="button"
+              onClick={() => setCarouselIndex((current) => current + 1)}
+              className="p-3 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary transition-all shadow-sm cursor-pointer"
+            >
               <span className="material-symbols-outlined">chevron_right</span>
             </button>
           </div>
@@ -250,19 +270,20 @@ export default function Home() {
                     {match.spotsLeft === 1 ? "1 Spot Left" : match.spotsLeft > 1 ? `${match.spotsLeft} Spots Open` : "Full"}
                   </span>
                 </div>
-                <button className={`w-full ${buttonClasses} text-sm font-black py-3 rounded-xl transition-all`}>
+                <Link to={`/matches/${match.id}`} className={`block w-full ${buttonClasses} rounded-3xl py-3 text-center text-sm font-black transition-all`}>
                   {match.spotsLeft === 1 ? "Claim Last Spot" : match.sport === "Tennis" ? "Accept Invite" : "Join Game"}
-                </button>
+                </Link>
               </div>
             );
           })}
+        </div>
         </div>
       </section>
 
       {/* Active Session Float Button */}
       {activeSession && activeSession.isActive && (
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-40">
-          <button className="flex items-center gap-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-8 py-5 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:scale-105 active:scale-95 transition-all border border-white/10 backdrop-blur-lg group">
+          <Link to="/matches/1" className="group flex items-center gap-4 rounded-full border border-white/10 bg-slate-900 px-8 py-5 text-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-all hover:scale-105 active:scale-95">
             <span className="material-symbols-outlined text-primary group-hover:animate-pulse">bolt</span>
             <div className="text-left">
               <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-50 leading-none mb-1">Active Session</p>
@@ -271,9 +292,23 @@ export default function Home() {
             <div className="ml-4 size-8 rounded-full bg-primary flex items-center justify-center text-white">
               <span className="material-symbols-outlined text-lg">arrow_forward</span>
             </div>
-          </button>
+          </Link>
         </div>
       )}
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow="Home action"
+        title="Save Favorite Venue"
+        description="Mock favorite action from the home recommendation card."
+        confirmLabel="Save favorite"
+        onClose={() => setActiveAction(null)}
+        onConfirm={() => setActiveAction(null)}
+      >
+        <div className="rounded-2xl bg-slate-50 p-5 text-sm font-bold text-slate-600">
+          {activeAction?.split(':')[1]} will be saved to your mock favorites. Carousel index is {carouselIndex}.
+        </div>
+      </MockModal>
     </main>
   );
 }

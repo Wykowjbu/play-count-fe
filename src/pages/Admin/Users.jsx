@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import MockModal, { MockField, TextArea, TextInput } from '../../components/MockModal';
 import { getAdminUsers } from '../../services/mock/platformService';
 
 const statusClasses = {
@@ -9,10 +10,20 @@ const statusClasses = {
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
+  const [activeAction, setActiveAction] = useState(null);
 
   useEffect(() => {
     getAdminUsers().then(setUsers);
   }, []);
+
+  const confirmUserAction = () => {
+    setUsers((currentUsers) =>
+      currentUsers.map((user) =>
+        user.id === activeAction.user.id ? { ...user, status: activeAction.status } : user
+      )
+    );
+    setActiveAction(null);
+  };
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 p-6 lg:p-8">
@@ -54,10 +65,18 @@ export default function AdminUsers() {
                 {user.status}
               </span>
               <div className="flex gap-2 md:justify-end">
-                <button type="button" className="rounded-xl border border-rose-200 px-3 py-2 text-xs font-black uppercase tracking-widest text-rose-600 hover:bg-rose-50 cursor-pointer">
+                <button
+                  type="button"
+                  onClick={() => setActiveAction({ user, status: 'Banned' })}
+                  className="rounded-xl border border-rose-200 px-3 py-2 text-xs font-black uppercase tracking-widest text-rose-600 hover:bg-rose-50 cursor-pointer"
+                >
                   Ban
                 </button>
-                <button type="button" className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 cursor-pointer">
+                <button
+                  type="button"
+                  onClick={() => setActiveAction({ user, status: 'Active' })}
+                  className="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 cursor-pointer"
+                >
                   Unban
                 </button>
               </div>
@@ -65,6 +84,25 @@ export default function AdminUsers() {
           ))}
         </div>
       </div>
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow="Admin user action"
+        title={`${activeAction?.status === 'Banned' ? 'Ban' : 'Unban'} User`}
+        description={`${activeAction?.user?.name || ''} will be marked as ${activeAction?.status || ''} in mock data.`}
+        confirmLabel="Confirm mock action"
+        onClose={() => setActiveAction(null)}
+        onConfirm={confirmUserAction}
+      >
+        <div className="space-y-4">
+          <MockField label="User">
+            <TextInput defaultValue={activeAction?.user?.email} readOnly />
+          </MockField>
+          <MockField label={activeAction?.status === 'Banned' ? 'Ban reason' : 'Admin note'}>
+            <TextArea defaultValue={activeAction?.status === 'Banned' ? 'Policy violation / suspicious booking behavior.' : 'Appeal reviewed, account restored.'} />
+          </MockField>
+        </div>
+      </MockModal>
     </div>
   );
 }

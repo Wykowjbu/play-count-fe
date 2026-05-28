@@ -14,13 +14,13 @@ export default function BusinessLayout() {
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-background-light font-display">
+    <div className="flex min-h-screen flex-col bg-background-light font-display lg:flex-row">
       {/* Sidebar */}
-      <aside className="lg:w-64 bg-background-dark text-white flex-shrink-0 flex flex-col">
+      <aside className="flex flex-shrink-0 flex-col bg-background-dark text-slate-100 lg:w-72">
         <div className="p-4 lg:p-6">
           <Link to="/" className="flex items-center space-x-2">
             <span className="material-symbols-outlined text-primary text-3xl">sports_tennis</span>
-            <span className="text-xl font-bold">PlayCourt Biz</span>
+            <span className="text-xl font-black">PlayCourt Biz</span>
           </Link>
         </div>
         
@@ -29,10 +29,10 @@ export default function BusinessLayout() {
             <Link
               key={item.name}
               to={item.path}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors whitespace-nowrap ${
+              className={`flex items-center space-x-3 rounded-2xl px-4 py-3 transition-colors whitespace-nowrap ${
                 location.pathname === item.path
-                  ? 'bg-primary text-white'
-                  : 'text-gray-400 hover:bg-white/10 hover:text-white'
+                  ? 'bg-primary text-slate-900'
+                  : 'text-slate-100/60 hover:bg-white/10 hover:text-primary'
               }`}
             >
               <span className="material-symbols-outlined">{item.icon}</span>
@@ -41,12 +41,12 @@ export default function BusinessLayout() {
           ))}
         </nav>
 
-        <div className="hidden lg:block p-4 border-t border-gray-800">
-          <Link to="/admin/dashboard" className="mb-2 flex items-center space-x-3 px-4 py-3 w-full text-gray-400 hover:text-white transition-colors">
+        <div className="hidden border-t border-white/10 p-4 lg:block">
+          <Link to="/admin/dashboard" className="mb-2 flex w-full items-center space-x-3 px-4 py-3 text-slate-100/60 transition-colors hover:text-primary">
             <span className="material-symbols-outlined">admin_panel_settings</span>
             <span className="font-medium">Admin Portal</span>
           </Link>
-          <button className="flex items-center space-x-3 px-4 py-3 w-full text-gray-400 hover:text-white transition-colors cursor-pointer">
+          <button className="flex w-full items-center space-x-3 px-4 py-3 text-slate-100/60 transition-colors hover:text-primary cursor-pointer">
             <span className="material-symbols-outlined">logout</span>
             <span className="font-medium">Sign Out</span>
           </button>
@@ -56,8 +56,8 @@ export default function BusinessLayout() {
       {/* Main Content Area */}
       <div className="flex-grow flex flex-col">
         {/* Header */}
-        <header className="min-h-16 bg-white border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-6 lg:px-8 py-4 sm:py-0">
-          <h2 className="text-xl font-bold text-gray-900">
+        <header className="flex min-h-16 flex-col justify-between gap-3 border-b border-slate-200 bg-white px-6 py-4 sm:flex-row sm:items-center sm:py-0 lg:px-8">
+          <h2 className="text-xl font-black text-gray-900">
             {navItems.find(item => item.path === location.pathname)?.name || 'Business Portal'}
           </h2>
           <div className="flex items-center space-x-4">
@@ -78,7 +78,7 @@ export default function BusinessLayout() {
         </header>
 
         {/* Content */}
-        <main className="flex-grow overflow-auto bg-slate-50">
+        <main className="flex-grow overflow-auto bg-background-light">
           <Outlet />
         </main>
       </div>

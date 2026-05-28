@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import MockModal, { MockField, TextInput } from '../../components/MockModal';
 import { getBusinessCourts } from '../../services/mock/profileService';
 import { formatCurrency } from '../../utils/format';
 
@@ -10,10 +11,28 @@ const statusClasses = {
 
 export default function Courts() {
   const [courts, setCourts] = useState([]);
+  const [showAddCourt, setShowAddCourt] = useState(false);
 
   useEffect(() => {
     getBusinessCourts().then(setCourts);
   }, []);
+
+  const addMockCourt = () => {
+    setCourts((currentCourts) => [
+      ...currentCourts,
+      {
+        id: Date.now(),
+        name: `Court ${currentCourts.length + 1}`,
+        sport: 'Pickleball',
+        surface: 'Hard Court',
+        status: 'Available',
+        todayBookings: 0,
+        occupancyRate: 0,
+        pricePerHour: 150000,
+      },
+    ]);
+    setShowAddCourt(false);
+  };
 
   return (
     <div className="p-8 space-y-8 max-w-7xl mx-auto">
@@ -23,7 +42,11 @@ export default function Courts() {
           <h1 className="text-3xl font-black text-slate-900">Manage Courts</h1>
           <p className="text-sm font-bold text-slate-500 mt-2">Control court status, price, and daily operations.</p>
         </div>
-        <button className="h-12 px-6 rounded-2xl bg-primary text-white text-sm font-black hover:brightness-110 transition-all shadow-lg shadow-primary/20">
+        <button
+          type="button"
+          onClick={() => setShowAddCourt(true)}
+          className="h-12 px-6 rounded-2xl bg-primary text-white text-sm font-black hover:brightness-110 transition-all shadow-lg shadow-primary/20 cursor-pointer"
+        >
           Add Court
         </button>
       </div>
@@ -66,6 +89,45 @@ export default function Courts() {
           ))}
         </div>
       </div>
+
+      <MockModal
+        open={showAddCourt}
+        eyebrow="Court endpoint"
+        title="Add Court"
+        description="Create court mock form for /api/venues/{venueId}/courts."
+        confirmLabel="Add mock court"
+        onClose={() => setShowAddCourt(false)}
+        onConfirm={addMockCourt}
+      >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <MockField label="Court name">
+            <TextInput defaultValue={`Court ${courts.length + 1}`} />
+          </MockField>
+          <MockField label="Sport">
+            <select className="auth-field" defaultValue="Pickleball">
+              <option>Pickleball</option>
+              <option>Tennis</option>
+              <option>Badminton</option>
+            </select>
+          </MockField>
+          <MockField label="Court type">
+            <TextInput defaultValue="Hard Court" />
+          </MockField>
+          <MockField label="Base price">
+            <TextInput defaultValue="150000" />
+          </MockField>
+          <MockField label="Status">
+            <select className="auth-field" defaultValue="Available">
+              <option>Available</option>
+              <option>Booked</option>
+              <option>Maintenance</option>
+            </select>
+          </MockField>
+          <MockField label="Description">
+            <TextInput defaultValue="Standard court with evening lighting" />
+          </MockField>
+        </div>
+      </MockModal>
     </div>
   );
 }

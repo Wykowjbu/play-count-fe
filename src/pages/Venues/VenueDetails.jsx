@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import MockModal, { MockField, TextArea, TextInput } from '../../components/MockModal';
 import * as venueService from '../../services/mock/venueService';
 import { formatCurrency } from '../../utils/format';
 
@@ -10,6 +11,7 @@ export default function VenueDetails() {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedSlot, setSelectedSlot] = useState('');
   const [selectedCourt, setSelectedCourt] = useState('Court 1 (PVC Standard)');
+  const [activeAction, setActiveAction] = useState(null);
 
   useEffect(() => {
     const fetchVenue = async () => {
@@ -108,10 +110,18 @@ export default function VenueDetails() {
               </div>
             </div>
             <div className="flex space-x-2">
-              <button className="p-3 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors">
+              <button
+                type="button"
+                onClick={() => setActiveAction('share')}
+                className="p-3 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
+              >
                 <span className="material-symbols-outlined">share</span>
               </button>
-              <button className="p-3 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors">
+              <button
+                type="button"
+                onClick={() => setActiveAction('favorite')}
+                className="p-3 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
+              >
                 <span className="material-symbols-outlined">favorite</span>
               </button>
             </div>
@@ -146,7 +156,13 @@ export default function VenueDetails() {
           <section>
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-bold text-gray-900">Reviews</h2>
-              <button className="text-primary font-semibold hover:underline">Write a review</button>
+              <button
+                type="button"
+                onClick={() => setActiveAction('review')}
+                className="text-primary font-semibold hover:underline cursor-pointer"
+              >
+                Write a review
+              </button>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -198,6 +214,7 @@ export default function VenueDetails() {
                 <div className="flex flex-wrap gap-2">
                   {venue.availableDates.map((date) => (
                     <button
+                      type="button"
                       key={date}
                       onClick={() => setSelectedDate(date)}
                       className={`px-4 py-2 rounded-xl border-2 transition-all ${
@@ -218,6 +235,7 @@ export default function VenueDetails() {
                 <div className="grid grid-cols-2 gap-2">
                   {venue.timeSlots.map((slot) => (
                     <button
+                      type="button"
                       key={slot}
                       onClick={() => setSelectedSlot(slot)}
                       className={`py-3 px-2 rounded-xl border-2 text-sm transition-all ${
@@ -263,7 +281,9 @@ export default function VenueDetails() {
               </div>
 
               <button 
+                type="button"
                 disabled={!selectedSlot}
+                onClick={() => setActiveAction('booking')}
                 className="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Book Now
@@ -276,6 +296,77 @@ export default function VenueDetails() {
           </div>
         </div>
       </div>
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow="Venue action"
+        title={venueActionCopy[activeAction]?.title || 'Venue Action'}
+        description={venueActionCopy[activeAction]?.description}
+        confirmLabel={venueActionCopy[activeAction]?.confirm || 'Confirm'}
+        onClose={() => setActiveAction(null)}
+        onConfirm={() => setActiveAction(null)}
+      >
+        {activeAction === 'booking' && (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <MockField label="Venue">
+              <TextInput defaultValue={venue.name} readOnly />
+            </MockField>
+            <MockField label="Court">
+              <TextInput defaultValue={selectedCourt} readOnly />
+            </MockField>
+            <MockField label="Date">
+              <TextInput defaultValue={selectedDate} readOnly />
+            </MockField>
+            <MockField label="Time slot">
+              <TextInput defaultValue={selectedSlot} readOnly />
+            </MockField>
+          </div>
+        )}
+        {activeAction === 'review' && (
+          <div className="space-y-4">
+            <MockField label="Rating">
+              <select className="auth-field" defaultValue="5">
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+              </select>
+            </MockField>
+            <MockField label="Comment">
+              <TextArea defaultValue="Great court lighting and friendly staff." />
+            </MockField>
+          </div>
+        )}
+        {(activeAction === 'share' || activeAction === 'favorite') && (
+          <div className="rounded-2xl bg-slate-50 p-5 text-sm font-bold leading-6 text-slate-600">
+            {activeAction === 'share' ? `Share link copied for ${venue.name}.` : `${venue.name} will be saved to your mock favorites.`}
+          </div>
+        )}
+      </MockModal>
     </main>
   );
 }
+
+const venueActionCopy = {
+  share: {
+    title: 'Share Venue',
+    description: 'Mock share action for venue detail.',
+    confirm: 'Copy share link',
+  },
+  favorite: {
+    title: 'Add Favorite',
+    description: 'Mock POST /api/users/me/favorites/{venueId}.',
+    confirm: 'Save favorite',
+  },
+  review: {
+    title: 'Write Review',
+    description: 'Mock POST /api/venues/{id}/reviews. Player must have completed booking in the real API.',
+    confirm: 'Submit review',
+  },
+  booking: {
+    title: 'Create Booking Hold',
+    description: 'Mock POST /api/bookings that creates a 15-minute hold slot.',
+    confirm: 'Create booking hold',
+  },
+};
