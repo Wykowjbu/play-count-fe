@@ -3,6 +3,7 @@ import PublicLayout from './layouts/PublicLayout';
 import AuthLayout from './layouts/AuthLayout';
 import BusinessLayout from './layouts/BusinessLayout';
 import AdminLayout from './layouts/AdminLayout';
+import PlayerProfileLayout from './layouts/PlayerProfileLayout';
 
 // Pages
 import Home from './pages/Home';
@@ -48,15 +49,17 @@ function App() {
           <Route path="/matches" element={<Matches />} />
           <Route path="/matches/:id" element={<MatchDetails />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/profile/detail" element={<ProfileDetail />} />
-          <Route path="/profile/bookings" element={<ProfileBookings />} />
-          <Route path="/profile/bookings/:id" element={<BookingDetail />} />
-          <Route path="/profile/favorites" element={<Favorites />} />
-          <Route path="/profile/notifications" element={<Notifications />} />
-          <Route path="/profile/security" element={<ProfileSecurity />} />
           <Route path="/help-center" element={<InfoPage />} />
           <Route path="/privacy-policy" element={<InfoPage />} />
           <Route path="/terms-of-service" element={<InfoPage />} />
+          <Route path="/profile" element={<PlayerProfileLayout />}>
+            <Route path="detail" element={<ProfileDetail />} />
+            <Route path="bookings" element={<ProfileBookings />} />
+            <Route path="bookings/:id" element={<BookingDetail />} />
+            <Route path="favorites" element={<Favorites />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="security" element={<ProfileSecurity />} />
+          </Route>
         </Route>
 
         {/* Auth Routes */}

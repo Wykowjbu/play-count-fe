@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import MockModal, { MockField, TextArea, TextInput } from '../../components/MockModal';
 import { getBookingDetail } from '../../services/mock/platformService';
 import { formatCurrency } from '../../utils/format';
 
@@ -12,6 +13,7 @@ const statusClasses = {
 export default function BookingDetail() {
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
+  const [activeAction, setActiveAction] = useState(null);
 
   useEffect(() => {
     getBookingDetail(id).then(setBooking);
@@ -24,6 +26,18 @@ export default function BookingDetail() {
       </div>
     );
   }
+
+  const confirmBookingAction = () => {
+    if (activeAction === 'cancel') {
+      setBooking((currentBooking) => ({ ...currentBooking, status: 'Cancelled' }));
+    }
+
+    if (activeAction === 'payment') {
+      setBooking((currentBooking) => ({ ...currentBooking, paymentStatus: 'PendingVerification', status: 'PendingVerification' }));
+    }
+
+    setActiveAction(null);
+  };
 
   return (
     <section className="mx-auto max-w-7xl space-y-8 px-6 py-10">
@@ -56,7 +70,11 @@ export default function BookingDetail() {
               <Link to={`/venues/${booking.venueId}`} className="h-11 rounded-xl bg-slate-900 px-5 py-3 text-center text-sm font-black text-white transition-colors hover:bg-primary">
                 Open venue
               </Link>
-              <button type="button" className="h-11 rounded-xl border border-rose-200 px-5 text-sm font-black text-rose-600 transition-colors hover:bg-rose-50 cursor-pointer">
+              <button
+                type="button"
+                onClick={() => setActiveAction('cancel')}
+                className="h-11 rounded-xl border border-rose-200 px-5 text-sm font-black text-rose-600 transition-colors hover:bg-rose-50 cursor-pointer"
+              >
                 Cancel booking
               </button>
             </div>
@@ -98,12 +116,44 @@ export default function BookingDetail() {
               <p className="mt-2 text-sm font-black text-slate-900">transfer-proof.jpg</p>
               <p className="mt-1 text-xs font-bold text-slate-500">Mock multipart upload endpoint</p>
             </div>
-            <button type="button" className="mt-5 h-11 w-full rounded-xl bg-primary px-5 text-sm font-black text-white transition-all hover:brightness-110 cursor-pointer">
+            <button
+              type="button"
+              onClick={() => setActiveAction('payment')}
+              className="mt-5 h-11 w-full rounded-xl bg-primary px-5 text-sm font-black text-white transition-all hover:brightness-110 cursor-pointer"
+            >
               Submit payment proof
             </button>
           </div>
         </aside>
       </div>
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow="Booking action"
+        title={activeAction === 'cancel' ? 'Cancel Booking' : 'Submit Payment Proof'}
+        description={activeAction === 'cancel' ? 'Mock POST /api/bookings/{id}/cancel.' : 'Mock multipart upload for payment proof.'}
+        confirmLabel={activeAction === 'cancel' ? 'Cancel booking' : 'Upload proof'}
+        onClose={() => setActiveAction(null)}
+        onConfirm={confirmBookingAction}
+      >
+        {activeAction === 'cancel' ? (
+          <MockField label="Cancel reason">
+            <TextArea defaultValue="Schedule changed. Please release this slot." />
+          </MockField>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <MockField label="Transfer amount">
+              <TextInput defaultValue={booking.price} />
+            </MockField>
+            <MockField label="Transfer note">
+              <TextInput defaultValue={booking.id} />
+            </MockField>
+            <MockField label="Proof file">
+              <TextInput defaultValue="transfer-proof.jpg" readOnly />
+            </MockField>
+          </div>
+        )}
+      </MockModal>
     </section>
   );
 }

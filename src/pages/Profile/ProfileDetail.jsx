@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import MockModal, { MockField, TextArea, TextInput } from '../../components/MockModal';
 import { getCurrentPlayerProfile } from '../../services/mock/profileService';
 
 export default function ProfileDetail() {
   const [profile, setProfile] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
     getCurrentPlayerProfile().then(setProfile);
@@ -43,7 +45,11 @@ export default function ProfileDetail() {
                 <p className="text-sm font-bold text-slate-500">{profile.homeDistrict}</p>
               </div>
             </div>
-            <button className="h-12 px-6 rounded-2xl bg-slate-900 text-white text-sm font-black hover:bg-primary transition-colors">
+            <button
+              type="button"
+              onClick={() => setShowEditModal(true)}
+              className="h-12 px-6 rounded-2xl bg-slate-900 text-white text-sm font-black hover:bg-primary transition-colors cursor-pointer"
+            >
               Edit Profile
             </button>
           </div>
@@ -90,6 +96,41 @@ export default function ProfileDetail() {
           </div>
         </div>
       </div>
+
+      <MockModal
+        open={showEditModal}
+        eyebrow="Player profile"
+        title="Edit Profile"
+        description="Mock PUT /api/users/me and PUT /api/users/me/sports form."
+        confirmLabel="Save profile"
+        onClose={() => setShowEditModal(false)}
+        onConfirm={() => setShowEditModal(false)}
+      >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <MockField label="Full name">
+            <TextInput defaultValue={profile.fullName} />
+          </MockField>
+          <MockField label="Phone">
+            <TextInput defaultValue={profile.phoneNumber} />
+          </MockField>
+          <MockField label="Avatar URL">
+            <TextInput defaultValue={profile.avatar} />
+          </MockField>
+          <MockField label="Skill level">
+            <select className="auth-field" defaultValue={profile.preferences.skillLevel}>
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+            </select>
+          </MockField>
+          <MockField label="Favorite sports">
+            <TextInput defaultValue={profile.preferences.favoriteSports.join(', ')} />
+          </MockField>
+          <MockField label="Bio">
+            <TextArea defaultValue="Looking for friendly evening matches around Da Nang." />
+          </MockField>
+        </div>
+      </MockModal>
     </section>
   );
 }

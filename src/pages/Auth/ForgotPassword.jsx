@@ -11,6 +11,7 @@ export default function ForgotPassword() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [otpCode, setOtpCode] = useState('');
+  const [resendMessage, setResendMessage] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -64,9 +65,14 @@ export default function ForgotPassword() {
               onChange={(event) => setOtpCode(event.target.value)}
               placeholder="123456"
             />
-            <button type="button" className="text-xs font-black uppercase tracking-widest text-primary hover:underline cursor-pointer">
+            <button
+              type="button"
+              onClick={() => setResendMessage('Mock OTP resent. Throttle timer restarted at 60 seconds.')}
+              className="text-xs font-black uppercase tracking-widest text-primary hover:underline cursor-pointer"
+            >
               Resend OTP after 60s
             </button>
+            {resendMessage && <p className="text-xs font-bold text-emerald-600">{resendMessage}</p>}
           </>
         )}
 

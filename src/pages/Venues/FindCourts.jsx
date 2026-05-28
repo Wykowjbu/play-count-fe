@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import MockModal from '../../components/MockModal';
 import * as venueService from '../../services/mock/venueService';
 import { formatCurrency } from '../../utils/format';
 
@@ -8,6 +9,9 @@ export default function FindCourts() {
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
   const [priceRange, setPriceRange] = useState(25);
+  const [surface, setSurface] = useState('Hard Court');
+  const [page, setPage] = useState(1);
+  const [activeAction, setActiveAction] = useState(null);
   const [searchParams, setSearchParams] = useState({
     sport: 'Pickleball',
     district: 'Son Tra District',
@@ -102,7 +106,11 @@ export default function FindCourts() {
                 />
                 </span>
               </label>
-              <button className="inline-flex h-full min-h-14 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-black text-white shadow-lg shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer">
+              <button
+                type="button"
+                onClick={() => setActiveAction('search')}
+                className="inline-flex h-full min-h-14 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-black text-white shadow-lg shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer"
+              >
               <span className="material-symbols-outlined">search</span>
               <span>Update Results</span>
             </button>
@@ -187,9 +195,20 @@ export default function FindCourts() {
               <div>
                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-400 mb-5">Surface Type</h3>
                 <div className="flex flex-wrap gap-2">
-                  <button className="px-4 py-2 bg-primary text-white text-xs font-black rounded-full transition-all cursor-pointer">Hard Court</button>
-                  <button className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-black rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer">Clay</button>
-                  <button className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-black rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer">Grass</button>
+                  {['Hard Court', 'Clay', 'Grass'].map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => setSurface(item)}
+                      className={`px-4 py-2 text-xs font-black rounded-full transition-all cursor-pointer ${
+                        surface === item
+                          ? 'bg-primary text-white'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -236,7 +255,11 @@ export default function FindCourts() {
                         {venue.badgeText}
                       </div>
                     )}
-                    <button className="absolute top-4 right-4 bg-white/20 backdrop-blur-md text-white p-2.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">
+                    <button
+                      type="button"
+                      onClick={() => setActiveAction(`favorite:${venue.name}`)}
+                      className="absolute top-4 right-4 bg-white/20 backdrop-blur-md text-white p-2.5 rounded-full hover:bg-white hover:text-rose-500 transition-all cursor-pointer"
+                    >
                       <span className="material-symbols-outlined text-xl">favorite</span>
                     </button>
                     <div className="absolute bottom-4 left-4 flex gap-2">
@@ -280,15 +303,32 @@ export default function FindCourts() {
           {/* Pagination */}
           {!loading && venues.length > 0 && (
             <div className="mt-12 flex items-center justify-center gap-2">
-              <button className="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all disabled:opacity-30">
+              <button
+                type="button"
+                onClick={() => setPage((current) => Math.max(1, current - 1))}
+                className="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all disabled:opacity-30 cursor-pointer"
+              >
                 <span className="material-symbols-outlined">chevron_left</span>
               </button>
-              <button className="size-10 rounded-xl bg-primary text-white font-black text-sm">1</button>
-              <button className="size-10 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-black text-sm transition-all">2</button>
-              <button className="size-10 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-black text-sm transition-all">3</button>
+              {[1, 2, 3].map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setPage(item)}
+                  className={`size-10 rounded-xl font-black text-sm transition-all cursor-pointer ${
+                    page === item ? 'bg-primary text-white' : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
               <span className="px-2 text-slate-400">...</span>
-              <button className="size-10 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-black text-sm transition-all">8</button>
-              <button className="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+              <button type="button" onClick={() => setPage(8)} className="size-10 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 font-black text-sm transition-all cursor-pointer">8</button>
+              <button
+                type="button"
+                onClick={() => setPage((current) => Math.min(8, current + 1))}
+                className="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer"
+              >
                 <span className="material-symbols-outlined">chevron_right</span>
               </button>
             </div>
@@ -298,11 +338,33 @@ export default function FindCourts() {
 
       {/* Floating View Map Button */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40">
-        <button className="flex items-center gap-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-8 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all group border border-white/10 dark:border-black/10">
+        <button
+          type="button"
+          onClick={() => setActiveAction('map')}
+          className="flex items-center gap-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-8 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all group border border-white/10 dark:border-black/10 cursor-pointer"
+        >
           <span className="material-symbols-outlined group-hover:animate-bounce">map</span>
           <span className="font-black text-sm tracking-wide">Show Map View</span>
         </button>
       </div>
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow="Court search"
+        title={activeAction === 'map' ? 'Map View Preview' : activeAction?.startsWith('favorite:') ? 'Save Favorite Venue' : 'Update Search Results'}
+        description="Mock action for court discovery controls."
+        confirmLabel="Got it"
+        onClose={() => setActiveAction(null)}
+        onConfirm={() => setActiveAction(null)}
+      >
+        <div className="rounded-2xl bg-slate-50 p-5 text-sm font-bold leading-6 text-slate-600">
+          {activeAction === 'map'
+            ? `Showing ${venues.length} venue pins near ${searchParams.district}.`
+            : activeAction?.startsWith('favorite:')
+              ? `${activeAction.split(':')[1]} will be added to favorites.`
+              : `Searching ${searchParams.sport} in ${searchParams.district}, ${surface}, max ${priceRange * 10000} VND.`}
+        </div>
+      </MockModal>
     </div>
   );
 }

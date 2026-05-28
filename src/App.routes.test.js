@@ -11,8 +11,9 @@ describe('App routes', () => {
   });
 
   it('registers the missing profile and business management routes', () => {
-    expect(appSource).toContain('path="/profile/detail"');
-    expect(appSource).toContain('path="/profile/bookings"');
+    expect(appSource).toContain('path="/profile" element={<PlayerProfileLayout />}');
+    expect(appSource).toContain('path="detail"');
+    expect(appSource).toContain('path="bookings"');
     expect(appSource).toContain('path="/business/courts"');
   });
 
@@ -23,14 +24,15 @@ describe('App routes', () => {
     expect(appSource).toContain('path="/business/settings"');
   });
 
-  it('keeps player profile routes inside the public browsing shell', () => {
-    expect(appSource).not.toContain('PlayerProfileLayout');
+  it('groups player profile routes inside the public profile shell', () => {
+    expect(appSource).toContain('PlayerProfileLayout');
 
     const publicRoutesStart = appSource.indexOf('<Route element={<PublicLayout />}>');
     const authRoutesStart = appSource.indexOf('{/* Auth Routes */}');
     const publicRoutes = appSource.slice(publicRoutesStart, authRoutesStart);
 
-    expect(publicRoutes).toContain('path="/profile/detail"');
-    expect(publicRoutes).toContain('path="/profile/bookings"');
+    expect(publicRoutes).toContain('path="/profile" element={<PlayerProfileLayout />}');
+    expect(publicRoutes).toContain('path="detail"');
+    expect(publicRoutes).toContain('path="bookings"');
   });
 });

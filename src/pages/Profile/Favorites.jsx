@@ -1,14 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import MockModal from '../../components/MockModal';
 import { getFavoriteVenues } from '../../services/mock/platformService';
 import { formatCurrency } from '../../utils/format';
 
 export default function Favorites() {
   const [venues, setVenues] = useState([]);
+  const [activeVenue, setActiveVenue] = useState(null);
 
   useEffect(() => {
     getFavoriteVenues().then(setVenues);
   }, []);
+
+  const removeFavorite = () => {
+    setVenues((currentVenues) => currentVenues.filter((venue) => venue.id !== activeVenue.id));
+    setActiveVenue(null);
+  };
 
   return (
     <section className="mx-auto max-w-7xl space-y-8 px-6 py-10">
@@ -41,13 +48,31 @@ export default function Favorites() {
               <Link to={`/venues/${venue.id}`} className="flex-1 rounded-xl bg-slate-900 px-4 py-3 text-center text-sm font-black text-white transition-colors hover:bg-primary">
                 View venue
               </Link>
-              <button type="button" className="rounded-xl border border-rose-200 px-4 py-3 text-sm font-black text-rose-600 transition-colors hover:bg-rose-50 cursor-pointer">
+              <button
+                type="button"
+                onClick={() => setActiveVenue(venue)}
+                className="rounded-xl border border-rose-200 px-4 py-3 text-sm font-black text-rose-600 transition-colors hover:bg-rose-50 cursor-pointer"
+              >
                 Remove
               </button>
             </div>
           </div>
         ))}
       </div>
+
+      <MockModal
+        open={Boolean(activeVenue)}
+        eyebrow="Favorite venue"
+        title="Remove Favorite"
+        description={`${activeVenue?.name || ''} will be removed from the local mock favorites list.`}
+        confirmLabel="Remove favorite"
+        onClose={() => setActiveVenue(null)}
+        onConfirm={removeFavorite}
+      >
+        <div className="rounded-2xl bg-slate-50 p-5 text-sm font-bold text-slate-600">
+          This covers DELETE /api/users/me/favorites/{'{venueId}'} in the FE preview.
+        </div>
+      </MockModal>
     </section>
   );
 }

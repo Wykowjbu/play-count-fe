@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import MockModal from '../../components/MockModal';
 import * as venueService from '../../services/mock/venueService';
 import { formatCurrency } from '../../utils/format';
 
 export default function Revenue() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   useEffect(() => {
     const fetchRevenue = async () => {
@@ -174,7 +176,13 @@ export default function Revenue() {
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="p-6 border-b border-slate-50 flex items-center justify-between">
           <h3 className="text-lg font-black text-slate-900">Recent Revenue Sources</h3>
-          <button className="text-primary text-xs font-black hover:underline uppercase tracking-wider">Download Report</button>
+          <button
+            type="button"
+            onClick={() => setShowReportModal(true)}
+            className="text-primary text-xs font-black hover:underline uppercase tracking-wider cursor-pointer"
+          >
+            Download Report
+          </button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
@@ -221,6 +229,25 @@ export default function Revenue() {
           </table>
         </div>
       </div>
+
+      <MockModal
+        open={showReportModal}
+        eyebrow="Revenue export"
+        title="Download Revenue Report"
+        description="Mock export for owner revenue summary, daily/monthly reports, and transaction log endpoints."
+        confirmLabel="Generate mock report"
+        onClose={() => setShowReportModal(false)}
+        onConfirm={() => setShowReportModal(false)}
+      >
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {['Daily revenue', 'Monthly revenue', 'Transactions'].map((label) => (
+            <div key={label} className="rounded-2xl bg-slate-50 p-4">
+              <p className="text-sm font-black text-slate-900">{label}</p>
+              <p className="mt-1 text-xs font-bold text-slate-500">CSV preview ready</p>
+            </div>
+          ))}
+        </div>
+      </MockModal>
     </div>
   );
 }

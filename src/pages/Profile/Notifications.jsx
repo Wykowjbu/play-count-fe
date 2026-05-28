@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import MockModal from '../../components/MockModal';
 import { getNotifications } from '../../services/mock/platformService';
 
 const typeClasses = {
@@ -10,10 +11,18 @@ const typeClasses = {
 
 export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
+  const [showReadModal, setShowReadModal] = useState(false);
 
   useEffect(() => {
     getNotifications().then(setNotifications);
   }, []);
+
+  const markAllRead = () => {
+    setNotifications((currentNotifications) =>
+      currentNotifications.map((notification) => ({ ...notification, unread: false }))
+    );
+    setShowReadModal(false);
+  };
 
   return (
     <section className="mx-auto max-w-7xl space-y-8 px-6 py-10">
@@ -23,7 +32,11 @@ export default function Notifications() {
           <h1 className="text-3xl font-black text-slate-900">Notifications</h1>
           <p className="mt-2 text-sm font-bold text-slate-500">List notifications and mark read mock endpoints.</p>
         </div>
-        <button type="button" className="h-11 rounded-xl bg-primary px-5 text-sm font-black text-white transition-all hover:brightness-110 cursor-pointer">
+        <button
+          type="button"
+          onClick={() => setShowReadModal(true)}
+          className="h-11 rounded-xl bg-primary px-5 text-sm font-black text-white transition-all hover:brightness-110 cursor-pointer"
+        >
           Mark all as read
         </button>
       </div>
@@ -49,6 +62,20 @@ export default function Notifications() {
           ))}
         </div>
       </div>
+
+      <MockModal
+        open={showReadModal}
+        eyebrow="Notifications"
+        title="Mark Notifications as Read"
+        description="Mock POST /api/notifications/read. Omitting ids marks all notifications as read."
+        confirmLabel="Mark all read"
+        onClose={() => setShowReadModal(false)}
+        onConfirm={markAllRead}
+      >
+        <div className="rounded-2xl bg-slate-50 p-5 text-sm font-bold text-slate-600">
+          {notifications.filter((notification) => notification.unread).length} unread notifications will be updated in local mock state.
+        </div>
+      </MockModal>
     </section>
   );
 }

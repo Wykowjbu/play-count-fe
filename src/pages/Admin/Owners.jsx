@@ -1,12 +1,23 @@
 import { useEffect, useState } from 'react';
+import MockModal, { MockField, TextArea, TextInput } from '../../components/MockModal';
 import { getPendingOwners } from '../../services/mock/platformService';
 
 export default function AdminOwners() {
   const [owners, setOwners] = useState([]);
+  const [activeAction, setActiveAction] = useState(null);
 
   useEffect(() => {
     getPendingOwners().then(setOwners);
   }, []);
+
+  const confirmOwnerAction = () => {
+    setOwners((currentOwners) =>
+      currentOwners.map((owner) =>
+        owner.id === activeAction.owner.id ? { ...owner, status: activeAction.status } : owner
+      )
+    );
+    setActiveAction(null);
+  };
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 p-6 lg:p-8">
@@ -37,16 +48,43 @@ export default function AdminOwners() {
             </div>
             <textarea className="mt-5 min-h-24 w-full rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold text-slate-700 outline-none focus:border-primary" placeholder="Approval note or reject reason" />
             <div className="mt-4 flex gap-3">
-              <button type="button" className="flex-1 rounded-xl bg-primary px-4 py-3 text-sm font-black text-white cursor-pointer">
+              <button
+                type="button"
+                onClick={() => setActiveAction({ owner, status: 'Approved' })}
+                className="flex-1 rounded-xl bg-primary px-4 py-3 text-sm font-black text-white cursor-pointer"
+              >
                 Approve
               </button>
-              <button type="button" className="flex-1 rounded-xl border border-rose-200 px-4 py-3 text-sm font-black text-rose-600 hover:bg-rose-50 cursor-pointer">
+              <button
+                type="button"
+                onClick={() => setActiveAction({ owner, status: 'Rejected' })}
+                className="flex-1 rounded-xl border border-rose-200 px-4 py-3 text-sm font-black text-rose-600 hover:bg-rose-50 cursor-pointer"
+              >
                 Reject
               </button>
             </div>
           </div>
         ))}
       </div>
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow="Owner KYC"
+        title={`${activeAction?.status || ''} Owner KYC`}
+        description="Mock approve/reject endpoint. Approve promotes the user to Owner role in the real API."
+        confirmLabel="Submit decision"
+        onClose={() => setActiveAction(null)}
+        onConfirm={confirmOwnerAction}
+      >
+        <div className="space-y-4">
+          <MockField label="Business">
+            <TextInput defaultValue={activeAction?.owner?.business} readOnly />
+          </MockField>
+          <MockField label={activeAction?.status === 'Rejected' ? 'Reject reason' : 'Approval note'}>
+            <TextArea defaultValue={activeAction?.status === 'Rejected' ? 'Business license image is unclear. Please resubmit.' : 'Documents reviewed. Owner role can be activated.'} />
+          </MockField>
+        </div>
+      </MockModal>
     </div>
   );
 }

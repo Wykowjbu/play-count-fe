@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import MockModal from '../../components/MockModal';
 import * as authService from '../../services/mock/authService';
 
 export default function Login() {
@@ -7,6 +8,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [socialProvider, setSocialProvider] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -119,7 +121,11 @@ export default function Login() {
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-4">
-          <button className="flex items-center justify-center gap-3 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all font-black text-sm text-slate-700 cursor-pointer">
+          <button
+            type="button"
+            onClick={() => setSocialProvider('Google')}
+            className="flex items-center justify-center gap-3 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all font-black text-sm text-slate-700 cursor-pointer"
+          >
             <svg className="size-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -128,7 +134,11 @@ export default function Login() {
             </svg>
             Google
           </button>
-          <button className="flex items-center justify-center gap-3 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all font-black text-sm text-slate-700 cursor-pointer">
+          <button
+            type="button"
+            onClick={() => setSocialProvider('Apple')}
+            className="flex items-center justify-center gap-3 py-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all font-black text-sm text-slate-700 cursor-pointer"
+          >
             <svg className="size-5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M17.05 20.28c-.96.95-2.12 1.38-3.48 1.38-1.18 0-2.1-.31-2.91-.72-.8-.41-1.63-.83-2.76-.83-1.11 0-2.02.43-2.84.85-.75.39-1.57.82-2.68.82-1.3 0-2.43-.45-3.38-1.36C-2.45 19.1 1.25 10.15 6.45 10.15c1.1 0 1.95.34 2.65.68.75.36 1.45.72 2.3.72.8 0 1.55-.38 2.25-.72.85-.43 1.9-.88 3.25-.88 1.15 0 2.22.45 3.05 1.22-.5.42-1.1 1.02-1.1 2.5 0 1.8 1.1 2.55 2.15 3.02-.35 1.25-.9 2.5-1.9 3.59zM12 10.15c-.1 0-.15-.05-.25-.05 2.15-2.5 1.9-5.15 1.85-5.3 0-.1.05-.2.15-.25 2.65.1 4.5 2.45 4 5.3 0 .1-.1.2-.25.25-1.35.1-2.65.05-5.5.05z" />
             </svg>
@@ -143,6 +153,20 @@ export default function Login() {
           Create Account
         </Link>
       </p>
+
+      <MockModal
+        open={Boolean(socialProvider)}
+        eyebrow="Mock OAuth"
+        title={`${socialProvider || ''} Sign In`}
+        description="Social OAuth is represented as a mock modal in this FE-only preview."
+        confirmLabel="Continue mock login"
+        onClose={() => setSocialProvider(null)}
+        onConfirm={() => setSocialProvider(null)}
+      >
+        <div className="rounded-2xl bg-slate-50 p-5 text-sm font-bold text-slate-600">
+          The backend OAuth redirect can be wired here later.
+        </div>
+      </MockModal>
     </div>
   );
 }

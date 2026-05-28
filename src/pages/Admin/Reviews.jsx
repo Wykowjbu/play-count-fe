@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import MockModal, { MockField, TextArea, TextInput } from '../../components/MockModal';
 import { getModerationReviews } from '../../services/mock/platformService';
 
 const statusClasses = {
@@ -9,10 +10,20 @@ const statusClasses = {
 
 export default function AdminReviews() {
   const [reviews, setReviews] = useState([]);
+  const [activeAction, setActiveAction] = useState(null);
 
   useEffect(() => {
     getModerationReviews().then(setReviews);
   }, []);
+
+  const confirmReviewAction = () => {
+    setReviews((currentReviews) =>
+      currentReviews.map((review) =>
+        review.id === activeAction.review.id ? { ...review, status: activeAction.status } : review
+      )
+    );
+    setActiveAction(null);
+  };
 
   return (
     <div className="mx-auto max-w-7xl space-y-8 p-6 lg:p-8">
@@ -40,16 +51,43 @@ export default function AdminReviews() {
             </div>
             <textarea className="mt-5 min-h-20 w-full rounded-2xl border border-slate-200 bg-white p-4 text-sm font-bold text-slate-700 outline-none focus:border-primary" placeholder="Moderation reason" />
             <div className="mt-4 flex gap-3">
-              <button type="button" className="flex-1 rounded-xl bg-slate-900 px-4 py-3 text-sm font-black text-white hover:bg-primary cursor-pointer">
+              <button
+                type="button"
+                onClick={() => setActiveAction({ review, status: 'Hidden' })}
+                className="flex-1 rounded-xl bg-slate-900 px-4 py-3 text-sm font-black text-white hover:bg-primary cursor-pointer"
+              >
                 Hide
               </button>
-              <button type="button" className="flex-1 rounded-xl border border-slate-200 px-4 py-3 text-sm font-black text-slate-600 hover:bg-slate-50 cursor-pointer">
+              <button
+                type="button"
+                onClick={() => setActiveAction({ review, status: 'Visible' })}
+                className="flex-1 rounded-xl border border-slate-200 px-4 py-3 text-sm font-black text-slate-600 hover:bg-slate-50 cursor-pointer"
+              >
                 Restore
               </button>
             </div>
           </article>
         ))}
       </div>
+
+      <MockModal
+        open={Boolean(activeAction)}
+        eyebrow="Review moderation"
+        title={`${activeAction?.status === 'Hidden' ? 'Hide' : 'Restore'} Review`}
+        description="Mock moderation endpoint for action hide|restore with optional reason."
+        confirmLabel="Apply moderation"
+        onClose={() => setActiveAction(null)}
+        onConfirm={confirmReviewAction}
+      >
+        <div className="space-y-4">
+          <MockField label="Review">
+            <TextInput defaultValue={activeAction?.review?.id} readOnly />
+          </MockField>
+          <MockField label="Reason">
+            <TextArea defaultValue={activeAction?.status === 'Hidden' ? 'Contains abusive or unrelated content.' : 'Review content has been cleared for visibility.'} />
+          </MockField>
+        </div>
+      </MockModal>
     </div>
   );
 }

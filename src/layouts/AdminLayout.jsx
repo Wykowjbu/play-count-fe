@@ -10,13 +10,13 @@ const navItems = [
 
 const navClass = ({ isActive }) =>
   `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-black transition-colors ${
-    isActive ? 'bg-primary text-white' : 'text-slate-400 hover:bg-white/10 hover:text-white'
+    isActive ? 'bg-primary text-slate-900' : 'text-slate-100/60 hover:bg-white/10 hover:text-primary'
   }`;
 
 export default function AdminLayout() {
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 font-display lg:flex-row">
-      <aside className="flex shrink-0 flex-col bg-slate-950 text-white lg:w-72">
+    <div className="flex min-h-screen flex-col bg-background-light font-display lg:flex-row">
+      <aside className="flex shrink-0 flex-col bg-slate-950 text-slate-100 lg:w-72">
         <div className="p-5 lg:p-6">
           <Link to="/" className="flex items-center gap-2">
             <span className="material-symbols-outlined text-3xl text-primary">admin_panel_settings</span>
@@ -39,7 +39,7 @@ export default function AdminLayout() {
             <p className="text-[10px] font-black uppercase tracking-widest text-primary">Internal control</p>
             <h1 className="text-lg font-black text-slate-900">Admin workspace</h1>
           </div>
-          <Link to="/business/revenue" className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-black text-slate-700 hover:border-primary hover:text-primary">
+          <Link to="/business/revenue" className="rounded-3xl border border-slate-900 px-4 py-2 text-sm font-black text-slate-700 hover:bg-primary hover:text-slate-900">
             Owner portal
           </Link>
         </header>
